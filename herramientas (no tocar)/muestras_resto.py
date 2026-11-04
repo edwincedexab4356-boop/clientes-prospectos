@@ -81,9 +81,28 @@ VARIEDADES = [I('Hogar', '🏠', 'Artículos para el hogar', '', 3, desde=1), I(
               I('Escolar', '✏️', 'Útiles escolares', '', 1, desde=1), I('Regalos', '🎁', 'Regalos y detalles', '', 5, desde=1),
               I('Limpieza', '🧹', 'Limpieza', '', 2, desde=1), I('Tecnología', '🔌', 'Cables y cargadores', '', 4, desde=1)]
 
+BURGER = [I('Hamburguesas', '🍔', 'Hamburguesa clásica', 'Carne de la casa, queso, vegetales y papas.', 7.50), I('Hamburguesas', '🍔', 'Hamburguesa doble con tocino', 'Doble carne, cheddar y tocino.', 10.50),
+          I('Bowls', '🥗', 'Bowl de pollo', 'Arroz, pollo a la plancha y vegetales.', 8.50), I('Alitas', '🍗', 'Alitas BBQ (10)', 'Con papas y salsa ranch.', 9.00),
+          I('Alitas', '🌶️', 'Alitas picantes (10)', 'Con papas.', 9.00), I('Extras', '🍟', 'Papas con queso y tocino', '', 4.50), I('Bebidas', '🥤', 'Batido o soda', '', 2.50)]
+AFRO = [I('Del mar', '🐟', 'Pescado en salsa de coco', 'Con arroz con coco y patacones.', 9.50), I('Del mar', '🍲', 'Rondón', 'Sopa caribeña de mariscos y coco.', 10.00),
+        I('Parrilla', '🍖', 'Costillas ahumadas', 'Con ensalada y yuca frita.', 11.00), I('Parrilla', '🍗', 'Pollo a la brasa', 'Medio pollo con arroz con coco.', 8.50),
+        I('Criollo', '🍛', 'Arroz con coco y frijoles', 'Acompañante de la casa.', 3.00), I('Criollo', '🍌', 'Patacones (porción)', '', 2.00), I('Bebidas', '🥤', 'Agua de saril o jugo natural', '', 2.00)]
+PARRILLA = [I('Cortes', '🥩', 'Churrasco 10 oz', 'Con papas y chimichurri.', 16.00), I('Cortes', '🥩', 'Picaña', 'Al punto que prefiera.', 18.00), I('Cortes', '🍖', 'Costillas a la parrilla', '', 14.00),
+            I('Pollo', '🍗', 'Pechuga a la parrilla', 'Con ensalada.', 10.00), I('Entradas', '🧀', 'Provoleta', '', 6.00), I('Café', '☕', 'Café de especialidad', '', 2.50), I('Postres', '🍰', 'Postre del día', '', 4.00)]
+MARISCOS = [I('Ceviches', '🦐', 'Ceviche de corvina', 'Con galletas o patacones.', 7.00), I('Ceviches', '🦐', 'Ceviche mixto', 'Corvina, camarón y pulpo.', 9.00),
+            I('Del mar', '🐟', 'Pescado entero frito', 'Con patacones y ensalada.', 12.00), I('Del mar', '🦞', 'Camarones al ajillo', 'Con arroz con coco.', 13.00),
+            I('Picadas', '🍖', 'Tabla de carnes para compartir', 'Res, cerdo, chorizo y yuca.', 18.00), I('Almuerzos', '🍛', 'Almuerzo criollo del día', 'Pregunte por el de hoy.', 6.00), I('Bebidas', '🍹', 'Jugos naturales', '', 2.50)]
+POOLBAR = [I('Para picar', '🍗', 'Alitas (10)', 'BBQ o picantes.', 7.00), I('Para picar', '🍟', 'Picada de la casa', 'Para compartir.', 12.00), I('Para picar', '🌮', 'Nachos con todo', '', 6.50),
+           I('Reservas', '🎱', 'Mesa de billar (1 hora)', '', 5.00), I('Reservas', '🎤', 'Karaoke / salón VIP', 'Para cumpleaños y eventos.', 0, u='a cotizar'), I('Bebidas', '🥤', 'Sodas y jugos', '', 1.50)]
+
 def tipo(rubro, nombre):
     n = nombre.lower()
     if rubro == 'restaurante':
+        if 'chomba' in n: return 'burger'
+        if 'afro' in n: return 'afro'
+        if 'rum' in n: return 'parrilla'
+        if 'aspinwall' in n: return 'mariscos'
+        if 'pool bar' in n: return 'poolbar'
         if any(k in n for k in ('hong kong', 'fuig', 'jenny liang', 'china')): return 'chino'
         if 'pollo' in n or 'chicken' in n: return 'pollo'
         if 'pizza' in n: return 'pizza'
@@ -97,6 +116,11 @@ def tipo(rubro, nombre):
     return rubro
 
 PLANT = {  # tipo: (rubro visible, modo, color, c2, eyebrow, h1, p, items, extraLbl, extraEj, extra)
+    'burger':     ('Hamburguesas y comida rápida', 'pedido', '#dc2626', '#fee2e2', 'Hamburguesas y alitas', 'Hamburguesas artesanales con delivery', 'Hamburguesas, bowls y alitas. Pida por WhatsApp y se lo llevamos.', BURGER, '¿Delivery o para retirar? (dirección)', 'Delivery a Sabanitas', SIS_COMIDA),
+    'afro':       ('Cocina afro-caribeña', 'pedido', '#15803d', '#dcfce7', 'Cocina afro-caribeña', 'El sabor del Caribe colonense', 'Pescado en coco, rondón y carnes ahumadas. Haga su pedido o reserve por WhatsApp.', AFRO, '¿Para llevar o reserva? (hora)', 'Reserva para 2, jueves 1 p. m.', SIS_COMIDA),
+    'parrilla':   ('Restaurante y parrilla', 'pedido', '#7c2d12', '#ffedd5', 'Parrilla y café', 'Cortes a la parrilla en el corazón de Colón', 'Churrasco, picaña y café de especialidad. Reserve su mesa o pida por WhatsApp.', PARRILLA, '¿Reserva o para llevar? (hora)', 'Mesa para 4, sábado 7 p. m.', SIS_COMIDA),
+    'mariscos':   ('Restaurante y lounge', 'pedido', '#0e7490', '#cffafe', 'Cocina de autor · Buena Vista', 'Mariscos, ceviches y picadas frente al río', 'Cocina con sabores locales. Reserve su mesa o pida para llevar por WhatsApp.', MARISCOS, '¿Reserva o para llevar? (hora)', 'Mesa para 6, domingo 1 p. m.', SIS_COMIDA),
+    'poolbar':    ('Pool bar', 'pedido', '#4338ca', '#e0e7ff', 'Billar, karaoke y eventos', 'Billar, karaoke y buen ambiente en Cativá', 'Reserve su mesa de billar o el salón VIP para su cumpleaños por WhatsApp.', POOLBAR, '¿Para cuántas personas y qué día?', '8 personas, viernes 9 p. m.', SIS_COMIDA),
     'fonda':      ('Fonda y comida casera', 'pedido', '#b91c1c', '#fee2e2', 'Comida casera', 'Comida casera como en casa, lista para llevar', 'Almuerzos del día, sopas y frituras. Haga su pedido por WhatsApp y páselo a buscar caliente.', FONDA, '¿Para llevar o para comer aquí?', 'Para llevar a las 12:30', SIS_COMIDA),
     'chino':      ('Restaurante de comida china', 'pedido', '#b91c1c', '#fee2e2', 'Comida china', 'Su comida china favorita, pedida en un minuto', 'Chow mein, arroz frito y wantanes. Arme su pedido y se lo tenemos listo.', CHINO, '¿Para llevar o a domicilio? (dirección)', 'Para llevar', SIS_COMIDA),
     'pollo':      ('Pollo frito', 'pedido', '#ea580c', '#ffedd5', 'Pollo frito', 'El pollo más crujiente, en combo o en balde', 'Combos personales y baldes para la familia. Pídalo por WhatsApp y páselo a buscar.', POLLO, '¿Para llevar o a domicilio? (dirección)', 'Para llevar', SIS_COMIDA),

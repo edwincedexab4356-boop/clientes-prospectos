@@ -11,6 +11,13 @@ for r in ws.iter_rows(min_row=2, values_only=True):
     slug = SLUGS.get(nombre) or next((v for k, v in SLUGS.items() if nombre.startswith(k)), None)
     filas.append({'id': len(filas), 'prio': prio, 'nombre': nombre, 'rubro': rubro.lower(), 'zona': zona, 'tel': tel or '', 'mapa': mapa, 'muestra': slug})
 
+# Por ahora solo los negocios con WhatsApp (celular de 8 dígitos que empieza por 6)
+import re as _re
+def _movil(t):
+    return any(len(d) == 8 and d[0] == '6' for d in (x.replace('-', '').replace(' ', '') for x in _re.findall(r'\d[\d\s-]{6,}\d', str(t))))
+filas = [f for f in filas if _movil(f['tel'])]
+for i, f in enumerate(filas): f['id'] = 'w' + str(i) + '-' + (f['muestra'] or '')
+
 HTML = r'''<!DOCTYPE html>
 <html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Enviar mensajes a negocios - D.E.K NovaCore</title>
@@ -40,7 +47,7 @@ details summary{cursor:pointer;color:var(--acc);font-size:13px;margin-top:8px}
 .num{max-width:170px}
 </style></head><body>
 <header>
-  <h1>Enviar mensajes a negocios</h1>
+  <h1>Negocios con WhatsApp</h1>
   <div class="muted sm">Pulsa <b>Enviar por WhatsApp</b>: se abre WhatsApp con el mensaje listo y tú solo das a enviar. Lo que marques como enviado se guarda en este navegador.</div>
   <div class="cfg">
     <label>Tu nombre (va en el saludo)<input id="yo" placeholder="Ej: Edwin"></label>
