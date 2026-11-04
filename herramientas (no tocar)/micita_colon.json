@@ -6395,5 +6395,119 @@
   "street": "9664+5VG, Puerto Pilón, Colón Province, Panama",
   "area": "Puerto Pilón",
   "noindex": false
+ },
+ {
+  "url": "https://www.micita.pa/pro/hostal-don-oscar-donoso",
+  "title": "Hostal Don Oscar - Alojamiento en Donoso Panamá",
+  "name": "Hostal Don Oscar",
+  "type": "TouristAttraction",
+  "cat": "Alojamiento",
+  "tel": "50766007133",
+  "wa": [
+   "50766007133"
+  ],
+  "web": null,
+  "sameAs": null,
+  "ext": [
+   "https://mwthytkjflhvblxsvyjf.supabase.co/storage/v1/object/public/pros-fotos/199fd042-df21-410f-bf73-b74292fd3a65.jpg"
+  ],
+  "street": "Panamá, Colón, Costa Abajo, Miguel de la Borda, 5M4X+26Q, Miguel de la Borda, Provincia de Colón, Panama",
+  "area": "Miguel de la Borda",
+  "noindex": false
+ },
+ {
+  "url": "https://www.micita.pa/pro/macondo-hostel-isla-grande",
+  "title": "Macondo Hostel - Alojamiento en Isla Grande Panamá",
+  "name": "Macondo Hostel",
+  "type": "TouristAttraction",
+  "cat": "Alojamiento",
+  "tel": "50765136082",
+  "wa": [
+   "50765136082"
+  ],
+  "web": null,
+  "sameAs": null,
+  "ext": [
+   "https://mwthytkjflhvblxsvyjf.supabase.co/storage/v1/object/public/pros-fotos/1f8937dc-ce1e-4dd0-854c-c43e473672f6.jpg"
+  ],
+  "street": "corregimiento de, callejón caseta de los Congos casa 14, Portobelo, Provincia de Colón, Panama",
+  "area": "Isla Grande",
+  "noindex": false
+ },
+ {
+  "url": "https://www.micita.pa/pro/finca-agro-turistica-villa-verde-chagres",
+  "title": "Finca Agro Turística Villa Verde - Alojamiento en Chagres Panamá",
+  "name": "Finca Agro Turística Villa Verde",
+  "type": "TouristAttraction",
+  "cat": "Alojamiento",
+  "tel": "50764294813",
+  "wa": [
+   "50764294813"
+  ],
+  "web": null,
+  "sameAs": null,
+  "ext": [
+   "https://mwthytkjflhvblxsvyjf.supabase.co/storage/v1/object/public/pros-fotos/268ed9e2-96c8-47eb-8801-1a7dbeb85ec5.jpg"
+  ],
+  "street": "Salud, Colón Province, Panama",
+  "area": "Salud",
+  "noindex": false
+ },
+ {
+  "url": "https://www.micita.pa/pro/centro-el-tucan-chagres",
+  "title": "Centro El Tucán - Operador turístico en Chagres Panamá",
+  "name": "Centro El Tucán",
+  "type": "TouristAttraction",
+  "cat": "Operador turístico",
+  "tel": "50762616291",
+  "wa": [
+   "50762616291"
+  ],
+  "web": null,
+  "sameAs": null,
+  "ext": [
+   "https://mwthytkjflhvblxsvyjf.supabase.co/storage/v1/object/public/pros-fotos/b73c188e-d4d0-4eda-830c-4c1c657ee07a.jpg"
+  ],
+  "street": "6XCV+5FW, Achiote, Colón Province, Panama",
+  "area": "Achiote",
+  "noindex": false
+ },
+ {
+  "url": "https://www.micita.pa/pro/palmares-beach-resort-santa-isabel",
+  "title": "Palmares Beach Resort - Alojamiento en Santa Isabel Panamá",
+  "name": "Palmares Beach Resort",
+  "type": "TouristAttraction",
+  "cat": "Alojamiento",
+  "tel": "50769776643",
+  "wa": [
+   "50769776643"
+  ],
+  "web": null,
+  "sameAs": null,
+  "ext": [
+   "https://mwthytkjflhvblxsvyjf.supabase.co/storage/v1/object/public/pros-fotos/cff02591-7f74-4e35-aa13-d0f1dcbfe787.jpg"
+  ],
+  "street": "HJCP+QQJ, Palenque, Colón Province, Panama",
+  "area": "Palenque",
+  "noindex": false
+ },
+ {
+  "url": "https://www.micita.pa/pro/hotel-la-ceiba-panama-donoso",
+  "title": "Hotel la Ceiba Panama - Alojamiento en Donoso Panamá",
+  "name": "Hotel la Ceiba Panama",
+  "type": "TouristAttraction",
+  "cat": "Alojamiento",
+  "tel": "50764445625",
+  "wa": [
+   "50764445625"
+  ],
+  "web": null,
+  "sameAs": null,
+  "ext": [
+   "https://mwthytkjflhvblxsvyjf.supabase.co/storage/v1/object/public/pros-fotos/e501ad23-2fc2-45f2-bcb8-984521ac2543.png"
+  ],
+  "street": "Omar Torrijos Herrera, Coclesito, Provincia de Colón, Panama",
+  "area": "Sardina",
+  "noindex": false
  }
 ]
