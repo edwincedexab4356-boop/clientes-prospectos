@@ -16,7 +16,17 @@ import re as _re
 def _movil(t):
     return any(len(d) == 8 and d[0] == '6' for d in (x.replace('-', '').replace(' ', '') for x in _re.findall(r'\d[\d\s-]{6,}\d', str(t))))
 filas = [f for f in filas if _movil(f['tel'])]
-for i, f in enumerate(filas): f['id'] = 'w' + str(i) + '-' + (f['muestra'] or '')
+def _region(z):
+    z = str(z)
+    if _re.search(r'Arraij|Chorrera', z): return 'Panamá Oeste'
+    if _re.search(r'San Miguelito|Ciudad de Panamá|(^|, )Panamá$', z): return 'Ciudad de Panamá'
+    return 'Colón'
+_ids = set()
+for i, f in enumerate(filas):
+    f['id'] = f['muestra'] or ('w' + str(i))
+    if f['id'] in _ids: f['id'] += '-' + f['tel'].replace('-', '')
+    _ids.add(f['id'])
+    f['region'] = _region(f['zona'])
 
 HTML = r'''<!DOCTYPE html>
 <html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -58,6 +68,7 @@ details summary{cursor:pointer;color:var(--acc);font-size:13px;margin-top:8px}
       <option value="web">Solo página web</option>
       <option value="sistema">Solo sistema a medida</option></select></label>
   </div>
+  <div class="bar" id="zonas"></div>
   <div class="bar" id="filtros"></div>
 </header>
 <main>
@@ -102,11 +113,16 @@ const CAT = { taller: 'sus servicios y precios', ferreteria: 'sus productos con 
   abogados: 'sus servicios legales', contable: 'sus servicios', sala: 'sus paquetes con fotos y precios' };
 const $ = (s) => document.querySelector(s);
 const st = JSON.parse(localStorage.getItem('dek-envios') || '{}');
+// Migra marcas viejas ("w12-slug") al id nuevo ("slug")
+Object.keys(st).forEach((k) => { const m = k.match(/^w\d+-(.+)$/); if (m) { st[m[1]] = { ...st[k], ...st[m[1]] }; delete st[k]; } });
+localStorage.setItem('dek-envios', JSON.stringify(st));
 const cfg = JSON.parse(localStorage.getItem('dek-envios-cfg') || '{}');
 if (!cfg.link) cfg.link = 'https://edwin2030-cmd.github.io/dek-portafolio/';
 const guardar = () => { localStorage.setItem('dek-envios', JSON.stringify(st)); localStorage.setItem('dek-envios-cfg', JSON.stringify(cfg)); };
 ['yo', 'link', 'oferta'].forEach((k) => { if (cfg[k]) $('#' + k).value = cfg[k]; $('#' + k).addEventListener('input', () => { cfg[k] = $('#' + k).value; guardar(); pintar(); }); });
-let filtro = 'pendientes';
+let filtro = 'pendientes', limite = 40;
+const ZONAS = ['Colón', 'Panamá Oeste', 'Ciudad de Panamá', 'Todas'];
+if (!cfg.zona) cfg.zona = 'Colón';
 
 function numeros(t) {
   return (String(t).match(/\d[\d\s-]{6,}\d/g) || []).map((x) => x.replace(/\D/g, '')).map((d) => d.startsWith('507') ? d.slice(3) : d);
@@ -127,25 +143,27 @@ function mensaje(n) {
   else if (o === 'web') cuerpo = `Le puedo hacer ${web}. Desde $200.`;
   else if (o === 'sistema') cuerpo = `Le puedo hacer ${sis}. Funciona en el celular y la computadora.`;
   else cuerpo = `Ayudo a negocios de aquí con tres cosas, y puede tomar una o las tres juntas con precio especial:\n\n1) *Catálogo digital*: ${CAT[r]} en línea; el cliente arma su pedido y le llega a su WhatsApp ya escrito.\n2) *Página web*: para que lo encuentren en Google, con su ubicación, horario y botón de WhatsApp.\n3) *Sistema a medida*: ${sis.replace(/^un sistema /, '')}.`;
-  return `Hola, buenas. ¿Hablo con *${limpiaNombre(n.nombre)}*? ${yo}, aquí en Colón.\n\n${cuerpo}${n.muestra ? `\n\nYa le preparé una *muestra con el nombre de su negocio* para que vea cómo quedaría: ${MUESTRAS}${n.muestra}/` : ''}\n\nEsta semana tengo *precio de lanzamiento* para los primeros 4 negocios: página $150, catálogo $350 y el primer mes del sistema gratis.\n\nMis trabajos: ${link}\n\n${n.muestra ? '¿Qué le parece? Si le gusta, se la dejo lista con sus fotos y precios.' : '¿Le gustaría que le prepare una muestra para su negocio? Sin compromiso.'}`;
+  return `Hola, buenas. ¿Hablo con *${limpiaNombre(n.nombre)}*? ${yo}, ${n.region === 'Colón' ? 'aquí en Colón' : 'desde Colón (trabajo con negocios de todo Panamá)'}.\n\n${cuerpo}${n.muestra ? `\n\nYa le preparé una *muestra con el nombre de su negocio* para que vea cómo quedaría: ${MUESTRAS}${n.muestra}/` : ''}\n\nEsta semana tengo *precio de lanzamiento* para los primeros 4 negocios: página $150, catálogo $350 y el primer mes del sistema gratis.\n\nMis trabajos: ${link}\n\n${n.muestra ? '¿Qué le parece? Si le gusta, se la dejo lista con sus fotos y precios.' : '¿Le gustaría que le prepare una muestra para su negocio? Sin compromiso.'}`;
 }
 function guion(n) {
-  return `Buenas, ¿hablo con ${limpiaNombre(n.nombre)}? Mi nombre es ${cfg.yo || '[tu nombre]'}, de D.E.K NovaCore, aquí en Colón. Hago catálogos digitales, páginas web y sistemas para negocios. ¿Con quién puedo hablar sobre eso? ... Le quería ofrecer ${SIS[n.rubro]}, y una página o catálogo para que le pidan por WhatsApp. ¿Me da un WhatsApp para mandarle ejemplos?`;
+  return `Buenas, ¿hablo con ${limpiaNombre(n.nombre)}? Mi nombre es ${cfg.yo || '[tu nombre]'}, de D.E.K NovaCore, ${n.region === 'Colón' ? 'aquí en Colón' : 'de Colón'}. Hago catálogos digitales, páginas web y sistemas para negocios. ¿Con quién puedo hablar sobre eso? ... Le quería ofrecer ${SIS[n.rubro]}, y una página o catálogo para que le pidan por WhatsApp. ¿Me da un WhatsApp para mandarle ejemplos?`;
 }
 
 function pintar() {
   $('#falta-link').style.display = cfg.link ? 'none' : '';
-  const cuenta = { pendientes: 0, celular: 0, enviados: 0, todos: NEG.length };
-  NEG.forEach((n) => { const num = st[n.id]?.num || celular(n.tel); if (!st[n.id]?.ok) cuenta.pendientes++; else cuenta.enviados++; if (num && !st[n.id]?.ok) cuenta.celular++; });
+  $('#zonas').innerHTML = ZONAS.map((z) => `<button class="chip ${cfg.zona === z ? 'on' : ''}" data-z="${z}">${z} (${z === 'Todas' ? NEG.length : NEG.filter((n) => n.region === z).length})</button>`).join('');
+  const BASE = cfg.zona === 'Todas' ? NEG : NEG.filter((n) => n.region === cfg.zona);
+  const cuenta = { pendientes: 0, celular: 0, enviados: 0, todos: BASE.length };
+  BASE.forEach((n) => { const num = st[n.id]?.num || celular(n.tel); if (!st[n.id]?.ok) cuenta.pendientes++; else cuenta.enviados++; if (num && !st[n.id]?.ok) cuenta.celular++; });
   $('#filtros').innerHTML = [['celular', 'Con WhatsApp'], ['pendientes', 'Pendientes'], ['enviados', 'Enviados'], ['todos', 'Todos']]
     .map(([k, l]) => `<button class="chip ${filtro === k ? 'on' : ''}" data-f="${k}">${l} (${cuenta[k]})</button>`).join('');
-  const vis = NEG.filter((n) => {
+  const vis = BASE.filter((n) => {
     const num = st[n.id]?.num || celular(n.tel);
     return filtro === 'todos' || (filtro === 'enviados' ? st[n.id]?.ok : !st[n.id]?.ok && (filtro !== 'celular' || num));
   });
   const sc = (n) => (st[n.id]?.num || celular(n.tel) ? 2 : 0) + (n.muestra ? 1 : 0);
   vis.sort((a, b) => sc(b) - sc(a) || a.prio - b.prio);
-  $('#lista').innerHTML = vis.map((n) => {
+  $('#lista').innerHTML = vis.slice(0, limite).map((n) => {
     const num = st[n.id]?.num || celular(n.tel);
     const fijos = numeros(n.tel).filter((d) => d[0] !== '6');
     const msg = st[n.id]?.msg || mensaje(n);
@@ -166,10 +184,12 @@ function pintar() {
         ${fijos.length ? `<p class="muted sm"><b>Si llamas:</b> ${guion(n)}</p>` : ''}
       </details>
     </div>`;
-  }).join('') || '<p class="muted">No hay negocios en este filtro.</p>';
+  }).join('') + (vis.length > limite ? `<button class="btn alt" style="width:100%;justify-content:center" data-mas>Mostrar más (${vis.length - limite} restantes)</button>` : '') || '<p class="muted">No hay negocios en este filtro.</p>';
 }
 document.addEventListener('click', (e) => {
-  const f = e.target.closest('[data-f]'); if (f) { filtro = f.dataset.f; pintar(); return; }
+  const f = e.target.closest('[data-f]'); if (f) { filtro = f.dataset.f; limite = 40; pintar(); return; }
+  const z = e.target.closest('[data-z]'); if (z) { cfg.zona = z.dataset.z; limite = 40; guardar(); pintar(); return; }
+  if (e.target.closest('[data-mas]')) { limite += 40; pintar(); return; }
   const ok = e.target.closest('[data-ok]'); if (ok) { const id = ok.dataset.ok; st[id] = { ...st[id], ok: !st[id]?.ok, fecha: new Date().toISOString().slice(0, 10) }; guardar(); pintar(); return; }
   const env = e.target.closest('[data-env]'); if (env && env.getAttribute('aria-disabled') !== 'true') { const id = env.dataset.env; setTimeout(() => { st[id] = { ...st[id], ok: true, fecha: new Date().toISOString().slice(0, 10) }; guardar(); pintar(); }, 800); }
 });

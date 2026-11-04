@@ -207,6 +207,15 @@ def resto(xlsx, hechos, taller_items, ferre_items, extra_taller):
         while s in usados: s = f'{base}-{k}'; k += 1
         usados.add(s)
         z = zona if zona else 'Colón'
+        ciudad = z.split(',')[-1].strip()
+        if ciudad in ('Panamá', 'San Miguelito', 'Arraiján', 'La Chorrera'):
+            def loc(t, c=ciudad):
+                if not isinstance(t, str): return t
+                for x, y in (('el Caribe de Colón', c), ('Colón y Sabanitas', c), ('Colón o Sabanitas', c), ('colonense', 'panameño'), ('Sabanitas', c), ('Colón', c)): t = t.replace(x, y)
+                return t
+            eyebrow, h1, p = loc(eyebrow), loc(h1), loc(p)
+            items = [{k: loc(v) for k, v in it.items()} for it in items]
+            xe = loc(xe)
         out.append(dict(slug=s, clave=nombre_x, nombre=nombre_vis, ini=iniciales(nombre_vis), color=color, c2=c2, rubro=rub, zona=z,
                         tel=tel1, telLink=('+507' + tel1.replace('-', '')) if tel1 else '',
                         eyebrow=f'{eyebrow} · {z.split(",")[-1].strip()}', h1=h1, p=p, modo=modo, items=items, extraLbl=xl, extraEj=xe, extra=extra))

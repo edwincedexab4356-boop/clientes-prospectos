@@ -40,9 +40,23 @@ CAT = {  # categoría de micita -> (rubro, prioridad, qué ofrecer, precio)
     'Firma de Abogados': ('abogados', 1, 'Página web profesional con citas', 'Web $380'),
     'Firma de Abogados en…': ('abogados', 1, 'Página web profesional con citas', 'Web $380'),
     'Consultoría Empresarial': ('contable', 1, 'Página web profesional + sistema de clientes', 'Web $380'),
+    'Restaurante de cocina casual': ('restaurante', 2, 'Menú digital con pedidos por WhatsApp', 'Catálogo $350 (lanzamiento)'),
+    'Restaurante Italiano': ('restaurante', 2, 'Menú digital con pedidos y reservas', 'Catálogo $350 (lanzamiento)'),
+    'Restaurante general': ('restaurante', 2, 'Menú digital con pedidos por WhatsApp', 'Catálogo $350 (lanzamiento)'),
+    'Food truck': ('restaurante', 2, 'Menú digital con pedidos por WhatsApp', 'Catálogo $350 (lanzamiento)'),
+    'Catering': ('sala', 1, 'Página con menús y cotizaciones + NovaCore (eventos)', 'Web $380 + NovaCore'),
+    'Mecánica de motos': ('taller', 1, 'NovaCore (taller) + página', 'NovaCore 1er mes gratis + página $150'),
+    'Mecánica automotriz general': ('taller', 1, 'NovaCore (taller) + página con citas', 'NovaCore 1er mes gratis + página $150'),
+    'Electromecánica automotriz': ('taller', 1, 'NovaCore (taller) + página', 'NovaCore 1er mes gratis + página $150'),
+    'Carrocería': ('taller', 1, 'NovaCore (taller) + página', 'NovaCore 1er mes gratis + página $150'),
+    'Chapistería': ('taller', 1, 'NovaCore (taller) + página', 'NovaCore 1er mes gratis + página $150'),
+    'Pintura de vehículos': ('taller', 1, 'NovaCore (taller) + página', 'NovaCore 1er mes gratis + página $150'),
+    'Servicios integrales para mascotas': ('veterinaria', 1, 'Página con servicios y citas', 'Presentación $150 / web $380'),
+    'Clases de Yoga': ('gimnasio', 2, 'Página con clases + NovaCore para mensualidades', 'Presentación $150 + NovaCore'),
+    'Operador Turístico General': ('tours', 1, 'Página web con tours y reservas por WhatsApp', 'Web $380'),
     'Entretenimiento': ('sala', 1, 'Página con paquetes y reservas + NovaCore (eventos)', 'Web $380 + NovaCore'),
 }
-FUERA = re.compile(r'radisson|smart fit|dairy queen|duty free|shelter bay|ancon seguros|energyasia|beauty style internacional|ismael laguna|ecleens|champagne|margarita, corregimiento|multillantas z/l', re.I)
+FUERA = re.compile(r'mcdonald|kfc|burger king|popeyes|domino|pizza hut|little caesar|subway|starbucks|cinnabon|dunkin|sbarro|papa john|hooters|friday|johnny rocket|chili|carl.s jr|wendy|taco bell|krispy|juan valdez|athanasiou|novey|cochez|super 99|riba smith|machetazo|powerclub|power club|hilton|marriott|sheraton|westin|hyatt|wyndham|best western|holiday inn|hampton|intercontinental|riu |decameron|waldorf|bristol|country inn|sortis|hospital|punta pac|farmacia|arrocha|metro plus|smart ?fit|ecolaw|morgan|alcogal|arias fabrega|banco|caja de ahorros|universidad|ministerio|municipio|alcald|radisson|smart fit|dairy queen|duty free|shelter bay|ancon seguros|energyasia|beauty style internacional|ismael laguna|ecleens|champagne|margarita, corregimiento|multillantas z/l', re.I)
 
 perf = json.load(open(PERFILES, encoding='utf-8'))
 wb = load_workbook(XLSX)
@@ -51,14 +65,20 @@ ya_tel = {d.replace('-', '') for c in ws['E'][1:] for d in re.findall(r'\d[\d-]{
 ya_nom = {str(c.value).lower() for c in ws['B'][1:]} | {str(c.value).lower().split(' (')[0] for c in ws['B'][1:]}
 vistos, n = set(), 0
 for p in sorted(perf, key=lambda x: x['name'].lower()):
-    if 'err' in p or p['cat'] not in CAT or FUERA.search(p['name']): continue
+    if 'err' in p or FUERA.search(p['name']): continue
+    c0 = p['cat'].replace('…', '').strip()
+    clave = next((k for k in CAT if c0 == k or c0.startswith(k + ' en') or (len(c0) > 8 and k.startswith(c0))), None)
+    if not clave: continue
+    p['cat'] = clave
     wa = p['wa'][0][3:]
     if wa in vistos or wa in ya_tel or p['name'].lower() in ya_nom: continue
     vistos.add(wa)
     rubro, prio, oferta, precio = CAT[p['cat']]
     tel = f'{wa[:4]}-{wa[4:]}'
-    zona = (p.get('area') or '').strip() or 'Colón'
-    if zona.lower() != 'colón': zona = f'{zona}, Colón'
+    suf = re.sub(r'-\d+$', '', p['url'].rsplit('/', 1)[1])
+    ciudad = 'San Miguelito' if suf.endswith('san-miguelito') else 'Arraiján' if suf.endswith('arraijan') else 'La Chorrera' if suf.endswith('chorrera') else 'Panamá' if suf.endswith('-panama') else 'Colón'
+    area = (p.get('area') or '').strip()
+    zona = ciudad if not area or area.lower() == ciudad.lower() else f'{area}, {ciudad}'
     nombre = re.sub(r'\s+', ' ', p['name']).strip()
     ws.append([prio, nombre, rubro.capitalize(), zona, tel, 'Celular (WhatsApp)', 'No tiene', oferta, precio, rubro, 'Abrir mapa', 'Pendiente', '', p['cat'], 'micita.pa (WhatsApp verificado) ' + p['url']])
     r = ws.max_row
