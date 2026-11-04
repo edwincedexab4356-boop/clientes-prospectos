@@ -1,6 +1,9 @@
 import json, os, sys, urllib.parse, html
 
-OUT = sys.argv[1]  # carpeta muestras del portafolio
+OUT = sys.argv[1]  # carpeta muestras
+XLSX = sys.argv[3]
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from muestras_resto import resto, PORTAFOLIO
 YO = '50766952340'
 OFERTA = 'Oferta de lanzamiento esta semana: página $150 · catálogo $350 · NovaCore primer mes gratis'
 
@@ -40,7 +43,7 @@ EXTRA_FERRE = {
     'titulo': 'Y para su caja e inventario: un sistema a medida',
     'texto': 'Además del catálogo, le hago un sistema para el mostrador. Puede probar una demostración de una ferretería ahora mismo.',
     'puntos': ['Caja rápida con ticket', 'Inventario que avisa cuando algo se acaba', 'Fiado de clientes y abonos', 'Ventas por día y por forma de pago'],
-    'btn': 'Probar la demostración', 'link': '../../demo/',
+    'btn': 'Probar la demostración', 'link': 'https://edwin2030-cmd.github.io/dek-portafolio/demo/',
 }
 
 N = [
@@ -107,6 +110,9 @@ N = [
              'btn': 'Quiero saber más', 'link': None}),
 ]
 
+for n in N: n.setdefault('clave', n['nombre'])
+N += resto(XLSX, N, TALLER_ITEMS(), FERRE_ITEMS, EXTRA_TALLER)
+
 TPL = '''<!DOCTYPE html>
 <html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="{color}">
@@ -119,19 +125,19 @@ TPL = '''<!DOCTYPE html>
 <div class="propuesta"><div class="wrap"><span>👋 <b>Muestra hecha por D.E.K NovaCore para {nombre_e}.</b> <span class="oferta">{oferta}</span></span>
 <a class="btn-p" href="{wa}" target="_blank" rel="noopener">Me interesa</a></div></div>
 <header class="top"><div class="wrap"><a class="marca" href="#"><i>{ini}</i><span>{nombre_e}<small>{rubro}</small></span></a>
-<a class="btn c" href="tel:{telLink}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 013 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg><span>{tel}</span></a></div></header>
+{btn_tel}</div></header>
 <main>
 <section class="hero"><div class="wrap"><span class="eyebrow">{eyebrow}</span><h1>{h1}</h1><p>{p}</p>
 <div class="acciones"><a class="btn c" href="#catalogo">{cta}</a><a class="btn l" href="{mapa}" target="_blank" rel="noopener">Cómo llegar</a></div>
-<div class="datos"><span>{zona}</span><span>Tel. {tel}</span><span>Lunes a sábado</span></div></div></section>
+<div class="datos"><span>{zona}</span><span>Tel. {tel_txt}</span><span>Lunes a sábado</span></div></div></section>
 <section class="sec" id="catalogo"><div class="wrap"><h2>{titcat}</h2><p class="sub">{subcat}</p>
 <div class="filtros" id="filtros"></div><div class="grid" id="grid"></div></div></section>
 <section class="sec"><div class="wrap"><div class="info">
-<div><h3>Dirección</h3><p>{zona}</p></div><div><h3>Teléfono</h3><p>{tel}</p></div><div><h3>Horario</h3><p>Lunes a sábado · 8:00 a. m. a 5:00 p. m.</p></div></div></div></section>
+<div><h3>Dirección</h3><p>{zona}</p></div><div><h3>Teléfono</h3><p>{tel_txt}</p></div><div><h3>Horario</h3><p>Lunes a sábado · 8:00 a. m. a 5:00 p. m.</p></div></div></div></section>
 <section class="sec"><div class="wrap"><div class="extra"><h2>{x_tit}</h2><p>{x_txt}</p><ul>{x_li}</ul>
 <a class="btn c" href="{x_link}" {x_target}>{x_btn}</a></div></div></section>
 </main>
-<footer>Muestra de propuesta. Precios, horario y textos son de ejemplo y se cambian por los suyos.<br>Hecha por <a href="../../">D.E.K NovaCore</a> · WhatsApp 6695-2340</footer>
+<footer>Muestra de propuesta. Precios, horario y textos son de ejemplo y se cambian por los suyos.<br>Hecha por <a href="https://edwin2030-cmd.github.io/dek-portafolio/">D.E.K NovaCore</a> · WhatsApp 6695-2340</footer>
 <div class="carrito" id="carrito"><span id="c-txt"></span><button type="button" class="btn" id="ver-pedido">{btnpedido}</button></div>
 <div class="modal" id="modal"><div class="hoja" id="hoja" role="dialog" aria-modal="true"></div></div>
 <script>window.MUESTRA = {data};</script>
@@ -145,7 +151,8 @@ for n in N:
     x_link = x['link'] or 'https://wa.me/' + YO + '?text=' + urllib.parse.quote(f'Hola, soy de {n["nombre"]}. Quiero saber más de: {x["titulo"].replace("Y para ", "").replace("Y para sus ", "")}')
     data = {'nombre': n['nombre'], 'tel': n['tel'], 'modo': n['modo'], 'items': n['items'], 'extraLbl': n['extraLbl'], 'extraEj': n['extraEj'], 'waPropuesta': wa}
     pag = TPL.format(color=n['color'], c2=n['c2'], nombre=e(n['nombre']), nombre_e=e(n['nombre']), oferta=e(OFERTA), wa=e(wa), ini=e(n['ini']), rubro=e(n['rubro']),
-                     telLink=n['telLink'], tel=e(n['tel']), eyebrow=e(n['eyebrow']), h1=e(n['h1']), p=e(n['p']),
+                     btn_tel=(f'<a class="btn c" href="tel:{n["telLink"]}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 013 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg><span>{e(n["tel"])}</span></a>' if n['tel'] else '<a class="btn c" href="#catalogo">' + ('Pedir cita' if n['modo'] == 'cita' else 'Hacer pedido') + '</a>'),
+                     tel_txt=e(n['tel']) if n['tel'] else 'su número aquí', eyebrow=e(n['eyebrow']), h1=e(n['h1']), p=e(n['p']),
                      cta='Pedir una cita' if n['modo'] == 'cita' else 'Ver productos y precios',
                      mapa=e('https://www.google.com/maps/search/?api=1&query=' + urllib.parse.quote(n['nombre'] + ' ' + n['zona'] + ' Panamá')),
                      zona=e(n['zona']), titcat='Servicios y precios' if n['modo'] == 'cita' else 'Productos y precios',
@@ -156,5 +163,5 @@ for n in N:
                      data=json.dumps(data, ensure_ascii=False).replace('</', '<\\/'))
     d = os.path.join(OUT, n['slug']); os.makedirs(d, exist_ok=True)
     open(os.path.join(d, 'index.html'), 'w', encoding='utf-8', newline='\n').write(pag)
-json.dump({n['nombre']: n['slug'] for n in N}, open(os.path.join(os.path.dirname(OUT.rstrip('/\\')), '..', 'slugs.json') if False else sys.argv[2], 'w', encoding='utf-8'), ensure_ascii=False)
-print('muestras:', [n['slug'] for n in N])
+json.dump({n['clave']: n['slug'] for n in N}, open(sys.argv[2], 'w', encoding='utf-8'), ensure_ascii=False)
+print('muestras:', len(N))

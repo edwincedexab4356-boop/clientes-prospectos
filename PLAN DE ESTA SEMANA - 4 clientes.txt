@@ -12,7 +12,8 @@ ENLACES QUE YA FUNCIONAN
   6. Ferretería Anthony .... /muestras/ferreteria-anthony/    Tel. 441-4643 (fijo), Av. Herrera
   7. Punto Cuatro (fiestas)  /muestras/punto-cuatro/          Tel. 433-2582 (fijo), Calle 13
   8. Panadería Colón ....... /muestras/panaderia-colon/       Tel. 441-3941 (fijo), Av. Herrera
-  (Delante de cada /muestras/... va https://edwin2030-cmd.github.io/dek-portafolio)
+  (Delante de cada /muestras/... va https://edwincedexab4356-boop.github.io/clientes-prospectos)
+  Los otros 91 negocios también tienen su muestra: en la página de envío, botón "Ver su muestra".
 
 OFERTA DE LANZAMIENTO (solo los primeros 4, hasta el domingo)
 - Página $150 (antes $200) · Catálogo $350 (antes $450) · NovaCore primer mes gratis ($20/mes después)

@@ -2,13 +2,13 @@ import json, sys
 from openpyxl import load_workbook
 
 XLSX, OUT = sys.argv[1], sys.argv[2]
-SLUGS = {'Taller Auto Fino': 'taller-auto-fino', 'Taller Don Bosco': 'taller-don-bosco', 'MC Place': 'mc-place', 'Quality Paint Shop': 'quality-paint-shop', 'Ferretería Colón': 'ferreteria-colon', 'Ferretería Anthony': 'ferreteria-anthony', 'Punto Cuatro': 'punto-cuatro', 'Panadería Colón': 'panaderia-colon'}
+SLUGS = json.load(open(sys.argv[3], encoding='utf-8'))
 ws = load_workbook(XLSX)['Prospectos']
 filas = []
 for r in ws.iter_rows(min_row=2, values_only=True):
     prio, nombre, rubro, zona, tel = r[0], r[1], r[2], r[3], r[4]
     mapa = ws.cell(row=len(filas) + 2, column=11).hyperlink.target
-    slug = next((v for k, v in SLUGS.items() if nombre.startswith(k.split(' (')[0].split(',')[0])), None)
+    slug = SLUGS.get(nombre) or next((v for k, v in SLUGS.items() if nombre.startswith(k)), None)
     filas.append({'id': len(filas), 'prio': prio, 'nombre': nombre, 'rubro': rubro.lower(), 'zona': zona, 'tel': tel or '', 'mapa': mapa, 'muestra': slug})
 
 HTML = r'''<!DOCTYPE html>
@@ -60,6 +60,7 @@ details summary{cursor:pointer;color:var(--acc);font-size:13px;margin-top:8px}
 </main>
 <script>
 const NEG = __DATA__;
+const MUESTRAS = 'https://edwincedexab4356-boop.github.io/clientes-prospectos/muestras/';
 const SIS = {
   taller: 'un sistema para llevar cada trabajo, lo que el cliente abonó, lo que le deben y lo que gasta en repuestos',
   ferreteria: 'un sistema de caja e inventario que avisa cuando algo se acaba, con fiado de clientes y reportes de ventas',
@@ -110,7 +111,7 @@ function mensaje(n) {
   else if (o === 'web') cuerpo = `Le puedo hacer ${web}. Desde $200.`;
   else if (o === 'sistema') cuerpo = `Le puedo hacer ${sis}. Funciona en el celular y la computadora.`;
   else cuerpo = `Ayudo a negocios de aquí con tres cosas, y puede tomar una o las tres juntas con precio especial:\n\n1) *Catálogo digital*: ${CAT[r]} en línea; el cliente arma su pedido y le llega a su WhatsApp ya escrito.\n2) *Página web*: para que lo encuentren en Google, con su ubicación, horario y botón de WhatsApp.\n3) *Sistema a medida*: ${sis.replace(/^un sistema /, '')}.`;
-  return `Hola, buenas. ¿Hablo con *${limpiaNombre(n.nombre)}*? ${yo}, aquí en Colón.\n\n${cuerpo}${n.muestra ? `\n\nYa le preparé una *muestra con el nombre de su negocio* para que vea cómo quedaría: ${link}muestras/${n.muestra}/` : ''}\n\nEsta semana tengo *precio de lanzamiento* para los primeros 4 negocios: página $150, catálogo $350 y el primer mes del sistema gratis.\n\nMis trabajos: ${link}\n\n${n.muestra ? '¿Qué le parece? Si le gusta, se la dejo lista con sus fotos y precios.' : '¿Le gustaría que le prepare una muestra para su negocio? Sin compromiso.'}`;
+  return `Hola, buenas. ¿Hablo con *${limpiaNombre(n.nombre)}*? ${yo}, aquí en Colón.\n\n${cuerpo}${n.muestra ? `\n\nYa le preparé una *muestra con el nombre de su negocio* para que vea cómo quedaría: ${MUESTRAS}${n.muestra}/` : ''}\n\nEsta semana tengo *precio de lanzamiento* para los primeros 4 negocios: página $150, catálogo $350 y el primer mes del sistema gratis.\n\nMis trabajos: ${link}\n\n${n.muestra ? '¿Qué le parece? Si le gusta, se la dejo lista con sus fotos y precios.' : '¿Le gustaría que le prepare una muestra para su negocio? Sin compromiso.'}`;
 }
 function guion(n) {
   return `Buenas, ¿hablo con ${limpiaNombre(n.nombre)}? Mi nombre es ${cfg.yo || '[tu nombre]'}, de D.E.K NovaCore, aquí en Colón. Hago catálogos digitales, páginas web y sistemas para negocios. ¿Con quién puedo hablar sobre eso? ... Le quería ofrecer ${SIS[n.rubro]}, y una página o catálogo para que le pidan por WhatsApp. ¿Me da un WhatsApp para mandarle ejemplos?`;
@@ -136,7 +137,7 @@ function pintar() {
     const wa = listo ? `https://wa.me/507${num}?text=${encodeURIComponent(msg)}` : '#';
     return `<div class="card ${st[n.id]?.ok ? 'hecho' : ''}" data-id="${n.id}">
       <div class="top"><div><b>${n.nombre}</b><div class="muted sm">${n.zona}</div></div>
-        <div><span class="tag ${n.prio === 1 ? 'p1' : n.prio === 2 ? 'p2' : ''}">Prioridad ${n.prio}</span><span class="tag">${n.rubro}</span>${n.muestra ? `<a class="tag p1" href="${(cfg.link || '').replace(/\/?$/, '/')}muestras/${n.muestra}/" target="_blank" rel="noopener">Ver su muestra</a>` : ''}</div></div>
+        <div><span class="tag ${n.prio === 1 ? 'p1' : n.prio === 2 ? 'p2' : ''}">Prioridad ${n.prio}</span><span class="tag">${n.rubro}</span>${n.muestra ? `<a class="tag p1" href="${MUESTRAS}${n.muestra}/" target="_blank" rel="noopener">Ver su muestra</a>` : ''}</div></div>
       <div class="acts">
         <a class="btn wa" href="${wa}" target="_blank" rel="noopener" aria-disabled="${!listo}" data-env="${n.id}" title="${num && !cfg.link ? 'Primero pon el enlace de tu portafolio arriba' : ''}">Enviar por WhatsApp${num ? ' · ' + bonito(num) : ''}</a>
         ${fijos.length ? fijos.map((f) => `<a class="btn alt" href="tel:+507${f}">Llamar ${f.slice(0, 3)}-${f.slice(3)}</a>`).join('') : ''}
