@@ -47,8 +47,8 @@ FUERA = re.compile(r'radisson|smart fit|dairy queen|duty free|shelter bay|ancon 
 perf = json.load(open(PERFILES, encoding='utf-8'))
 wb = load_workbook(XLSX)
 ws = wb['Prospectos']
-ya_tel = {d for c in ws['E'][1:] for d in re.sub(r'\D', ' ', str(c.value or '')).split()}
-ya_nom = {str(c.value).lower().split(' (')[0] for c in ws['B'][1:]}
+ya_tel = {d.replace('-', '') for c in ws['E'][1:] for d in re.findall(r'\d[\d-]{6,}\d', str(c.value or ''))}
+ya_nom = {str(c.value).lower() for c in ws['B'][1:]} | {str(c.value).lower().split(' (')[0] for c in ws['B'][1:]}
 vistos, n = set(), 0
 for p in sorted(perf, key=lambda x: x['name'].lower()):
     if 'err' in p or p['cat'] not in CAT or FUERA.search(p['name']): continue

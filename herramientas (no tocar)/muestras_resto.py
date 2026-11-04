@@ -191,6 +191,7 @@ def resto(xlsx, hechos, taller_items, ferre_items, extra_taller):
     claves = [h['clave'].lower() for h in hechos]
     out, usados = [], {h['slug'] for h in hechos}
     for r in ws.iter_rows(min_row=2, values_only=True):
+        if not r[1] or not r[2]: continue
         nombre_x, rubro, zona, tel = r[1], r[2].lower(), r[3], r[4] or ''
         if any(nombre_x.lower().startswith(c) for c in claves): continue
         nombre = re.sub(r'\s*\(.*\)$', '', nombre_x).strip()
