@@ -95,10 +95,38 @@ MARISCOS = [I('Ceviches', '🦐', 'Ceviche de corvina', 'Con galletas o patacone
 POOLBAR = [I('Para picar', '🍗', 'Alitas (10)', 'BBQ o picantes.', 7.00), I('Para picar', '🍟', 'Picada de la casa', 'Para compartir.', 12.00), I('Para picar', '🌮', 'Nachos con todo', '', 6.50),
            I('Reservas', '🎱', 'Mesa de billar (1 hora)', '', 5.00), I('Reservas', '🎤', 'Karaoke / salón VIP', 'Para cumpleaños y eventos.', 0, u='a cotizar'), I('Bebidas', '🥤', 'Sodas y jugos', '', 1.50)]
 
+VET = [I('Consultas', '🐶', 'Consulta veterinaria', 'Perros y gatos.', 20), I('Vacunas', '💉', 'Vacuna antirrábica', '', 15), I('Vacunas', '💉', 'Vacuna múltiple', 'Cachorros y adultos.', 25),
+       I('Cirugía', '✂️', 'Esterilización', 'Perro o gata, según peso.', 80, desde=1), I('Estética', '🛁', 'Baño y corte', 'Según tamaño.', 15, desde=1),
+       I('Prevención', '🐛', 'Desparasitación', '', 8), I('Servicios', '🏠', 'Consulta a domicilio', 'En Colón.', 35)]
+GYM = [I('Planes', '🏋️', 'Mensualidad', 'Acceso libre a máquinas y pesas.', 30), I('Planes', '📅', 'Pase diario', '', 4), I('Planes', '👥', 'Plan pareja (mes)', '', 50),
+       I('Clases', '🥊', 'Clases grupales', 'Funcional, baile o boxeo.', 5, u='por clase'), I('Entrenador', '💪', 'Entrenador personal', '12 sesiones al mes.', 80),
+       I('Extras', '🥤', 'Batidos de proteína', '', 3.50)]
+HOTEL = [I('Habitaciones', '🛏️', 'Habitación sencilla', 'Aire acondicionado, TV y wifi.', 35, u='por noche'), I('Habitaciones', '🛏️', 'Habitación doble', 'Dos camas.', 50, u='por noche'),
+         I('Habitaciones', '👨‍👩‍👧', 'Habitación familiar', 'Hasta 4 personas.', 70, u='por noche'), I('Extras', '🍳', 'Desayuno', 'Por persona.', 6),
+         I('Extras', '🚐', 'Traslado', 'Desde Colón o Sabanitas.', 25, desde=1), I('Extras', '🗺️', 'Tours en la zona', 'Portobelo, playas y fuertes.', 0, u='a cotizar')]
+TOURS = [I('Tours', '🏝️', 'Tour de playas', 'Lancha, guía y almuerzo.', 45, u='por persona'), I('Tours', '🏰', 'Fuertes de Portobelo', 'Historia y paseo por el pueblo.', 35, u='por persona'),
+         I('Tours', '🤿', 'Snorkel o buceo', 'Equipo incluido.', 60, desde=1, u='por persona'), I('Tours', '🛶', 'Comunidad Emberá', 'Cultura y almuerzo típico.', 55, u='por persona'),
+         I('Privados', '🚤', 'Lancha privada (día)', 'Hasta 8 personas.', 250, desde=1), I('Traslados', '🚐', 'Traslado desde Panamá', 'Ida y vuelta.', 30, u='por persona')]
+LEGAL = [I('Consultas', '⚖️', 'Consulta legal', 'Presencial o por videollamada.', 50), I('Familia', '👪', 'Divorcio de mutuo acuerdo', '', 600, desde=1), I('Familia', '🧒', 'Pensión alimenticia', '', 300, desde=1),
+         I('Empresas', '🏢', 'Constitución de sociedad', '', 900, desde=1), I('Bienes', '🏠', 'Compraventa y traspasos', '', 400, desde=1), I('Trámites', '📄', 'Poderes y documentos notariales', '', 75, desde=1),
+         I('Laboral', '💼', 'Casos laborales', 'Despidos y prestaciones.', 0, u='a cotizar')]
+CONTABLE = [I('Personas', '🧾', 'Declaración de renta', 'Persona natural.', 60, desde=1), I('Empresas', '📊', 'Contabilidad mensual', 'Pequeños negocios.', 120, desde=1, u='al mes'),
+            I('Empresas', '🏢', 'Aviso de operación y trámites', '', 80, desde=1), I('Empresas', '💵', 'Planillas y CSS', '', 50, desde=1, u='al mes'),
+            I('Asesoría', '🤝', 'Asesoría para su negocio', 'Precios, costos y crecimiento.', 40, u='por hora'), I('Seguros', '🛡️', 'Seguros', 'Auto, salud y negocio.', 0, u='a cotizar')]
+SALA = [I('Salón', '🎉', 'Alquiler del salón (4 horas)', 'Mesas, sillas y aire acondicionado.', 250, desde=1), I('Paquetes', '🎂', 'Paquete cumpleaños', 'Salón, decoración y comida para 50.', 650, desde=1),
+        I('Paquetes', '💍', 'Paquete boda o quince años', '', 1500, desde=1), I('Extras', '🍽️', 'Comida por persona', 'Buffet o plato servido.', 9, desde=1),
+        I('Extras', '🎵', 'Música y animación', 'DJ y sonido.', 150, desde=1), I('Extras', '🎈', 'Decoración temática', '', 120, desde=1)]
+
 def tipo(rubro, nombre):
     n = nombre.lower()
     if rubro == 'restaurante':
-        if 'chomba' in n: return 'burger'
+        if 'chomba' in n or 'burger' in n or 'rirro' in n or 'fastfood' in n or 'perros del' in n: return 'burger'
+        if 'cevich' in n or 'ceviche' in n or 'dock' in n: return 'mariscos'
+        if 'cake' in n or 'pastel' in n or 'bakery' in n or 'dulces' in n: return 'panaderia'
+        if 'rosticer' in n or 'rostiser' in n or 'chicken' in n: return 'pollo'
+        if 'coffe' in n or 'café' in n or 'cafe ' in n: return 'cafe'
+        if 'grill' in n or n.startswith('bar ') or 'sport bar' in n or 'girll' in n: return 'bar'
+        if 'italia' in n or 'siciliana' in n or 'artigiano' in n: return 'pizza'
         if 'afro' in n: return 'afro'
         if 'rum' in n: return 'parrilla'
         if 'aspinwall' in n: return 'mariscos'
@@ -113,6 +141,7 @@ def tipo(rubro, nombre):
         return 'fonda'
     if rubro in ('belleza', 'peluqueria'): return 'barberia' if ('barber' in n or 'barbershop' in n) else 'salon'
     if rubro == 'clinica': return 'lab' if 'laborator' in n else 'clinica'
+    if rubro in ('veterinaria', 'gimnasio', 'hotel', 'tours', 'abogados', 'contable', 'sala'): return rubro
     return rubro
 
 PLANT = {  # tipo: (rubro visible, modo, color, c2, eyebrow, h1, p, items, extraLbl, extraEj, extra)
@@ -121,6 +150,13 @@ PLANT = {  # tipo: (rubro visible, modo, color, c2, eyebrow, h1, p, items, extra
     'parrilla':   ('Restaurante y parrilla', 'pedido', '#7c2d12', '#ffedd5', 'Parrilla y café', 'Cortes a la parrilla en el corazón de Colón', 'Churrasco, picaña y café de especialidad. Reserve su mesa o pida por WhatsApp.', PARRILLA, '¿Reserva o para llevar? (hora)', 'Mesa para 4, sábado 7 p. m.', SIS_COMIDA),
     'mariscos':   ('Restaurante y lounge', 'pedido', '#0e7490', '#cffafe', 'Cocina de autor · Buena Vista', 'Mariscos, ceviches y picadas frente al río', 'Cocina con sabores locales. Reserve su mesa o pida para llevar por WhatsApp.', MARISCOS, '¿Reserva o para llevar? (hora)', 'Mesa para 6, domingo 1 p. m.', SIS_COMIDA),
     'poolbar':    ('Pool bar', 'pedido', '#4338ca', '#e0e7ff', 'Billar, karaoke y eventos', 'Billar, karaoke y buen ambiente en Cativá', 'Reserve su mesa de billar o el salón VIP para su cumpleaños por WhatsApp.', POOLBAR, '¿Para cuántas personas y qué día?', '8 personas, viernes 9 p. m.', SIS_COMIDA),
+    'veterinaria': ('Clínica veterinaria', 'cita', '#0d9488', '#ccfbf1', 'Veterinaria', 'Cuidamos a su mascota como de la familia', 'Consultas, vacunas, cirugías y baño. Pida su cita por WhatsApp.', VET, 'Nombre y tipo de mascota', 'Max, perro, 3 años', SIS_CITAS),
+    'gimnasio':   ('Gimnasio', 'cita', '#ea580c', '#ffedd5', 'Gimnasio', 'Entrene en serio, aquí en Colón', 'Planes mensuales, clases y entrenador personal. Inscríbase por WhatsApp.', GYM, '¿Cuándo quiere empezar?', 'El lunes', NOVACORE('Y para las mensualidades: NovaCore', 'Sepa quién pagó, quién debe y cuánto entró en el mes.', ['Cada socio con su plan y su fecha de pago', 'Quién está atrasado, sin cuaderno', 'Gastos del gimnasio', 'Reporte del mes'])),
+    'hotel':      ('Hospedaje', 'cita', '#0369a1', '#e0f2fe', 'Hospedaje', 'Su descanso en el Caribe de Colón', 'Habitaciones cómodas y tours en la zona. Reserve directo por WhatsApp, sin comisiones.', HOTEL, 'Fechas y número de personas', '15 al 17 de diciembre, 2 personas', SIS_SERV),
+    'tours':      ('Tours y turismo', 'cita', '#0891b2', '#cffafe', 'Tours en Colón', 'Viva el Caribe panameño', 'Playas, Portobelo, buceo y comunidades. Elija su tour y reserve por WhatsApp.', TOURS, 'Fecha y número de personas', 'Sábado 20, 4 personas', SIS_SERV),
+    'abogados':   ('Abogados', 'cita', '#1e3a8a', '#dbeafe', 'Abogados en Colón', 'Asesoría legal clara y cercana', 'Familia, empresas, bienes y trámites. Agende su consulta por WhatsApp.', LEGAL, 'Tema de su consulta', 'Traspaso de una casa', SIS_SERV),
+    'contable':   ('Contabilidad y asesoría', 'cita', '#065f46', '#d1fae5', 'Contabilidad y asesoría', 'Sus cuentas en orden, su negocio tranquilo', 'Declaraciones, contabilidad mensual, planillas y trámites. Agende por WhatsApp.', CONTABLE, 'Tipo de negocio', 'Mini súper', SIS_SERV),
+    'sala':       ('Salón de eventos', 'cita', '#9333ea', '#f3e8ff', 'Salón de eventos', 'Su fiesta, sin preocupaciones', 'Salón, comida, música y decoración en un solo lugar. Cotice por WhatsApp.', SALA, 'Fecha y tipo de evento', 'Quince años, 14 de febrero', NOVACORE('Y para sus eventos: NovaCore', 'Lleve cada evento en orden desde el celular.', ['Cada evento con fecha, cliente y precio', 'Adelantos y lo que falta por cobrar', 'Gastos de cada evento', 'Cuánto ganó en el mes'])),
     'fonda':      ('Fonda y comida casera', 'pedido', '#b91c1c', '#fee2e2', 'Comida casera', 'Comida casera como en casa, lista para llevar', 'Almuerzos del día, sopas y frituras. Haga su pedido por WhatsApp y páselo a buscar caliente.', FONDA, '¿Para llevar o para comer aquí?', 'Para llevar a las 12:30', SIS_COMIDA),
     'chino':      ('Restaurante de comida china', 'pedido', '#b91c1c', '#fee2e2', 'Comida china', 'Su comida china favorita, pedida en un minuto', 'Chow mein, arroz frito y wantanes. Arme su pedido y se lo tenemos listo.', CHINO, '¿Para llevar o a domicilio? (dirección)', 'Para llevar', SIS_COMIDA),
     'pollo':      ('Pollo frito', 'pedido', '#ea580c', '#ffedd5', 'Pollo frito', 'El pollo más crujiente, en combo o en balde', 'Combos personales y baldes para la familia. Pídalo por WhatsApp y páselo a buscar.', POLLO, '¿Para llevar o a domicilio? (dirección)', 'Para llevar', SIS_COMIDA),

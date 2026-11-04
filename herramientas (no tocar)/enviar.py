@@ -85,12 +85,21 @@ const SIS = {
   lavado: 'un sistema para llevar los servicios del día, cobros y gastos',
   ropa: 'un sistema de inventario y ventas',
   otro: 'un sistema para llevar sus ventas, cobros y gastos',
+  veterinaria: 'un sistema de citas, mascotas y cobros',
+  gimnasio: 'un sistema para llevar las mensualidades: quién pagó y quién debe',
+  hotel: 'un sistema de reservas y cobros',
+  tours: 'un sistema de reservas, adelantos y cobros',
+  abogados: 'un sistema de clientes, casos, citas y honorarios',
+  contable: 'un sistema de clientes, trámites y cobros',
+  sala: 'un sistema para llevar cada evento, el adelanto, lo que falta por cobrar y lo que gastó',
 };
 const CAT = { taller: 'sus servicios y precios', ferreteria: 'sus productos con foto y precio', repuestos: 'sus repuestos con foto y precio',
   panaderia: 'su menú con fotos y precios', restaurante: 'su menú con fotos y precios', cafe: 'su menú con fotos y precios',
   belleza: 'sus servicios y precios', peluqueria: 'sus cortes y precios', dentista: 'sus servicios', clinica: 'sus servicios',
   lavanderia: 'sus servicios y precios', eventos: 'sus paquetes y fotos de sus eventos', pinturas: 'sus productos con foto y precio',
-  lavado: 'sus servicios y precios', ropa: 'su ropa con foto y precio', otro: 'sus productos con foto y precio' };
+  lavado: 'sus servicios y precios', ropa: 'su ropa con foto y precio', otro: 'sus productos con foto y precio',
+  veterinaria: 'sus servicios y precios', gimnasio: 'sus planes y precios', hotel: 'sus habitaciones con fotos y precios', tours: 'sus tours con fotos y precios',
+  abogados: 'sus servicios legales', contable: 'sus servicios', sala: 'sus paquetes con fotos y precios' };
 const $ = (s) => document.querySelector(s);
 const st = JSON.parse(localStorage.getItem('dek-envios') || '{}');
 const cfg = JSON.parse(localStorage.getItem('dek-envios-cfg') || '{}');
