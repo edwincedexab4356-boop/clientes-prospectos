@@ -45,7 +45,7 @@ textarea{min-height:150px;resize:vertical;width:100%}
 .chip.on{background:var(--acc);border-color:var(--acc);color:#05080f}
 main{padding:16px 20px 60px;display:grid;gap:12px;max-width:1100px;margin:auto}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
-.card.hecho{opacity:.55}.top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.card.hecho{opacity:.55}.card.toca{border-color:#6b4f1a}.btn.seg{background:#b7791f;color:#fff}.btn.resp{background:#1f3b6b;color:#fff}.tag.ok{background:#0f2a1c;color:var(--ok)}.top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .tag{display:inline-block;font-size:12px;border-radius:99px;padding:2px 9px;background:#1b2436;color:var(--muted);margin-right:6px}
 .p1{background:#123524;color:var(--ok)}.p2{background:#3a3112;color:var(--warn)}
 .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
@@ -62,7 +62,7 @@ details summary{cursor:pointer;color:var(--acc);font-size:13px;margin-top:8px}
 </style></head><body>
 <header>
   <h1>Negocios con WhatsApp</h1>
-  <div class="muted sm">Pulsa <b>Enviar por WhatsApp</b>: se abre WhatsApp con el mensaje listo y tú solo das a enviar. Lo que marques como enviado se guarda en este navegador.</div>
+  <div class="muted sm">Pulsa <b>Enviar por WhatsApp</b>: se abre WhatsApp con el mensaje listo y tú solo das a enviar. Lo que marques como enviado se guarda en este navegador. A los 3 días, los que no te respondieron aparecen en <b>⏰ Para seguimiento</b>; cuando alguien te conteste, pulsa <b>💬 Me respondió</b>.</div>
   <div class="cfg">
     <label>Tu nombre (va en el saludo)<input id="yo" placeholder="Ej: Edwin"></label>
     <label>Enlace de tu portafolio (Vercel)<input id="link" placeholder="https://tu-portafolio.vercel.app"></label>
@@ -128,7 +128,15 @@ const guardar = () => { localStorage.setItem('dek-envios', JSON.stringify(st)); 
 let filtro = 'pendientes', limite = 40;
 const TOPE = 40, ESPERA = 90; // mensajes por día y segundos mínimos entre mensajes
 const hoy = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
-const enviadosHoy = () => Object.values(st).filter((s) => s && s.ok && s.fecha === hoy()).length;
+const enviadosHoy = () => Object.values(st).reduce((a, s) => a + (s && s.ok && s.fecha === hoy() ? 1 : 0) + (s && s.seg === hoy() ? 1 : 0), 0);
+const DIAS_SEG = 3; // días sin respuesta antes del seguimiento
+const dias = (f) => f ? Math.round((new Date(hoy()) - new Date(f)) / 864e5) : 0;
+const toca = (n) => { const s = st[n.id]; return !!(s && s.ok && !s.resp && !s.seg && dias(s.fecha) >= DIAS_SEG); };
+function seguimiento(n) {
+  return `Hola, buenas. Le escribí hace unos días ${n.muestra ? `sobre la muestra que le preparé para *${limpiaNombre(n.nombre)}*: ${MUESTRAS}${n.muestra}/` : `sobre una página o catálogo para *${limpiaNombre(n.nombre)}*.`}
+
+¿Pudo verla? Si le interesa, se la dejo lista con sus fotos y precios. Y si no es el momento, no hay problema, ¡gracias!`;
+}
 const faltaEspera = () => Math.max(0, Math.ceil(((cfg.ult || 0) + ESPERA * 1000 - Date.now()) / 1000));
 function cupo() {
   const n = enviadosHoy(), w = faltaEspera(), el = $('#cupo');
@@ -171,12 +179,14 @@ function pintar() {
   $('#falta-link').style.display = cfg.link ? 'none' : '';
   $('#zonas').innerHTML = ZONAS.map((z) => `<button class="chip ${cfg.zona === z ? 'on' : ''}" data-z="${z}">${z} (${z === 'Todas' ? NEG.length : NEG.filter((n) => n.region === z).length})</button>`).join('');
   const BASE = cfg.zona === 'Todas' ? NEG : NEG.filter((n) => n.region === cfg.zona);
-  const cuenta = { pendientes: 0, celular: 0, enviados: 0, todos: BASE.length };
+  const cuenta = { seguimiento: BASE.filter(toca).length, respondieron: BASE.filter((n) => st[n.id]?.resp).length, pendientes: 0, celular: 0, enviados: 0, todos: BASE.length };
   BASE.forEach((n) => { const num = st[n.id]?.num || celular(n.tel); if (!st[n.id]?.ok) cuenta.pendientes++; else cuenta.enviados++; if (num && !st[n.id]?.ok) cuenta.celular++; });
-  $('#filtros').innerHTML = [['celular', 'Con WhatsApp'], ['pendientes', 'Pendientes'], ['enviados', 'Enviados'], ['todos', 'Todos']]
+  $('#filtros').innerHTML = [['seguimiento', '⏰ Para seguimiento'], ['respondieron', '💬 Respondieron'], ['celular', 'Con WhatsApp'], ['pendientes', 'Pendientes'], ['enviados', 'Enviados'], ['todos', 'Todos']]
     .map(([k, l]) => `<button class="chip ${filtro === k ? 'on' : ''}" data-f="${k}">${l} (${cuenta[k]})</button>`).join('');
   const vis = BASE.filter((n) => {
     const num = st[n.id]?.num || celular(n.tel);
+    if (filtro === 'seguimiento') return toca(n);
+    if (filtro === 'respondieron') return !!st[n.id]?.resp;
     return filtro === 'todos' || (filtro === 'enviados' ? st[n.id]?.ok : !st[n.id]?.ok && (filtro !== 'celular' || num));
   });
   const sc = (n) => (st[n.id]?.num || celular(n.tel) ? 2 : 0) + (n.muestra ? 1 : 0);
@@ -184,21 +194,24 @@ function pintar() {
   $('#lista').innerHTML = vis.slice(0, limite).map((n) => {
     const num = st[n.id]?.num || celular(n.tel);
     const fijos = numeros(n.tel).filter((d) => d[0] !== '6');
-    const msg = st[n.id]?.msg || mensaje(n);
+    const s = st[n.id] || {}, sg = toca(n);
+    const msg = sg ? seguimiento(n) : s.msg || mensaje(n);
     const listo = num && cfg.link;
     const wa = listo ? `https://wa.me/507${num}?text=${encodeURIComponent(msg)}` : '#';
-    return `<div class="card ${st[n.id]?.ok ? 'hecho' : ''}" data-id="${n.id}">
+    const estado = s.resp ? '<span class="tag ok">💬 Respondió</span>' : s.seg ? `<span class="tag">Seguimiento enviado hace ${dias(s.seg)} día(s)</span>` : s.ok ? `<span class="tag">Enviado hace ${dias(s.fecha)} día(s)</span>` : '';
+    return `<div class="card ${sg ? 'toca' : s.ok ? 'hecho' : ''}" data-id="${n.id}">
       <div class="top"><div><b>${n.nombre}</b><div class="muted sm">${n.zona}</div></div>
-        <div><span class="tag ${n.prio === 1 ? 'p1' : n.prio === 2 ? 'p2' : ''}">Prioridad ${n.prio}</span><span class="tag">${n.rubro}</span>${n.muestra ? `<a class="tag p1" href="${MUESTRAS}${n.muestra}/" target="_blank" rel="noopener">Ver su muestra</a>` : ''}</div></div>
+        <div><span class="tag ${n.prio === 1 ? 'p1' : n.prio === 2 ? 'p2' : ''}">Prioridad ${n.prio}</span><span class="tag">${n.rubro}</span>${estado}${n.muestra ? `<a class="tag p1" href="${MUESTRAS}${n.muestra}/" target="_blank" rel="noopener">Ver su muestra</a>` : ''}</div></div>
       <div class="acts">
-        <a class="btn wa" href="${wa}" target="_blank" rel="noopener" aria-disabled="${!listo}" data-env="${n.id}" title="${num && !cfg.link ? 'Primero pon el enlace de tu portafolio arriba' : ''}">Enviar por WhatsApp${num ? ' · ' + bonito(num) : ''}</a>
+        <a class="btn wa ${sg ? 'seg' : ''}" href="${wa}" target="_blank" rel="noopener" aria-disabled="${!listo}" data-env="${n.id}" ${sg ? 'data-seg' : ''} title="${num && !cfg.link ? 'Primero pon el enlace de tu portafolio arriba' : ''}">${sg ? 'Enviar seguimiento' : 'Enviar por WhatsApp'}${num ? ' · ' + bonito(num) : ''}</a>
         ${fijos.length ? fijos.map((f) => `<a class="btn alt" href="tel:+507${f}">Llamar ${f.slice(0, 3)}-${f.slice(3)}</a>`).join('') : ''}
         <a class="btn alt" href="${n.mapa}" target="_blank" rel="noopener">Ver en Google Maps</a>
         <input class="num" data-num="${n.id}" placeholder="WhatsApp: 6xxx-xxxx" value="${st[n.id]?.num ? bonito(st[n.id].num) : ''}">
         <button class="btn ok" data-ok="${n.id}">${st[n.id]?.ok ? '✓ Enviado (deshacer)' : 'Marcar enviado'}</button>
+        ${s.ok ? `<button class="btn resp" data-resp="${n.id}">${s.resp ? '↩ Quitar "respondió"' : '💬 Me respondió'}</button>` : ''}
       </div>
-      <details><summary>Ver o cambiar el mensaje${fijos.length && !num ? ' · qué decir si llamas' : ''}</summary>
-        <textarea data-msg="${n.id}">${msg.replace(/</g, '&lt;')}</textarea>
+      <details><summary>${sg ? 'Ver el mensaje de seguimiento' : 'Ver o cambiar el mensaje'}${fijos.length && !num ? ' · qué decir si llamas' : ''}</summary>
+        <textarea ${sg ? 'readonly' : `data-msg="${n.id}"`}>${msg.replace(/</g, '&lt;')}</textarea>
         ${fijos.length ? `<p class="muted sm"><b>Si llamas:</b> ${guion(n)}</p>` : ''}
       </details>
     </div>`;
@@ -209,9 +222,10 @@ document.addEventListener('click', (e) => {
   const z = e.target.closest('[data-z]'); if (z) { cfg.zona = z.dataset.z; limite = 40; guardar(); pintar(); return; }
   if (e.target.closest('[data-mas]')) { limite += 40; pintar(); return; }
   const ok = e.target.closest('[data-ok]'); if (ok) { const id = ok.dataset.ok; st[id] = { ...st[id], ok: !st[id]?.ok, fecha: hoy() }; guardar(); pintar(); return; }
+  const rp = e.target.closest('[data-resp]'); if (rp) { const id = rp.dataset.resp; st[id] = { ...st[id], resp: !st[id]?.resp }; guardar(); pintar(); return; }
   const env = e.target.closest('[data-env]'); if (env && env.getAttribute('aria-disabled') !== 'true') {
     if (enviadosHoy() >= TOPE || faltaEspera() > 0) { e.preventDefault(); cupo(); $('#cupo').scrollIntoView({ block: 'nearest' }); return; }
-    cfg.ult = Date.now(); guardar(); const id = env.dataset.env; setTimeout(() => { st[id] = { ...st[id], ok: true, fecha: hoy() }; guardar(); pintar(); }, 800); }
+    cfg.ult = Date.now(); guardar(); const id = env.dataset.env, esSeg = env.hasAttribute('data-seg'); setTimeout(() => { st[id] = esSeg ? { ...st[id], seg: hoy() } : { ...st[id], ok: true, fecha: hoy() }; guardar(); pintar(); }, 800); }
 });
 document.addEventListener('change', (e) => {
   const n = e.target.dataset.num; if (n !== undefined) { const d = e.target.value.replace(/\D/g, '').replace(/^507/, ''); st[n] = { ...st[n], num: d.length === 8 && d[0] === '6' ? d : undefined }; if (d && !st[n].num) alert('Ese número no parece un celular de Panamá (8 dígitos que empiezan por 6).'); guardar(); pintar(); }
