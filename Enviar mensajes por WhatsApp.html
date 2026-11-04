@@ -25,6 +25,10 @@ main{padding:16px 20px 60px;display:grid;gap:12px;max-width:1100px;margin:auto}
 .aviso{background:#2a1d0b;border:1px solid #6b4f1a;border-radius:12px;padding:10px 14px;font-size:13px}
 details summary{cursor:pointer;color:var(--acc);font-size:13px;margin-top:8px}
 .num{max-width:170px}
+#cupo{margin-top:10px;padding:8px 12px;border-radius:10px;font-size:14px;background:#0f2a1c;border:1px solid #1f6b46}
+#cupo.espera{background:#2a1d0b;border-color:#6b4f1a}#cupo.lleno{background:#2a0f12;border-color:#7f1d1d}
+#cupo .barra{height:6px;border-radius:3px;background:#243047;margin-top:6px;overflow:hidden}#cupo .barra i{display:block;height:100%;background:var(--ok)}
+.btn.wa.bloq{opacity:.45;cursor:not-allowed}
 </style></head><body>
 <header>
   <h1>Negocios con WhatsApp</h1>
@@ -40,9 +44,10 @@ details summary{cursor:pointer;color:var(--acc);font-size:13px;margin-top:8px}
   </div>
   <div class="bar" id="zonas"></div>
   <div class="bar" id="filtros"></div>
+  <div id="cupo"></div>
 </header>
 <main>
-  <div class="aviso">Para no tener problemas con WhatsApp: <b>máximo 15-20 mensajes por día</b>, escribe primero a los que tienen celular (empieza por 6) y espera unos minutos entre uno y otro. Los teléfonos que empiezan por 4 son fijos: ahí no hay WhatsApp; llama o pasa por el local (abajo de cada uno tienes qué decir).</div>
+  <div class="aviso">Para no tener problemas con WhatsApp: <b>máximo 40 mensajes por día</b> (la página no te deja pasar de ahí) y al menos 90 segundos entre uno y otro. Escribe primero a los que tienen celular (empieza por 6) Los teléfonos que empiezan por 4 son fijos: ahí no hay WhatsApp; llama o pasa por el local (abajo de cada uno tienes qué decir).</div>
   <div class="aviso" id="falta-link" style="border-color:#7f1d1d;background:#2a0f12">Primero escribe arriba el <b>enlace de tu portafolio</b> (el de Vercel). Hasta entonces los botones de WhatsApp están apagados, para que no salga un mensaje sin enlace.</div>
   <div id="lista"></div>
 </main>
@@ -91,6 +96,18 @@ if (!cfg.link) cfg.link = 'https://edwin2030-cmd.github.io/dek-portafolio/';
 const guardar = () => { localStorage.setItem('dek-envios', JSON.stringify(st)); localStorage.setItem('dek-envios-cfg', JSON.stringify(cfg)); };
 ['yo', 'link', 'oferta'].forEach((k) => { if (cfg[k]) $('#' + k).value = cfg[k]; $('#' + k).addEventListener('input', () => { cfg[k] = $('#' + k).value; guardar(); pintar(); }); });
 let filtro = 'pendientes', limite = 40;
+const TOPE = 40, ESPERA = 90; // mensajes por día y segundos mínimos entre mensajes
+const hoy = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+const enviadosHoy = () => Object.values(st).filter((s) => s && s.ok && s.fecha === hoy()).length;
+const faltaEspera = () => Math.max(0, Math.ceil(((cfg.ult || 0) + ESPERA * 1000 - Date.now()) / 1000));
+function cupo() {
+  const n = enviadosHoy(), w = faltaEspera(), el = $('#cupo');
+  const lleno = n >= TOPE;
+  el.className = lleno ? 'lleno' : w ? 'espera' : '';
+  el.innerHTML = `<b>Hoy: ${n} de ${TOPE} mensajes.</b> ` + (lleno ? 'Llegaste al límite de hoy. Mañana sigues; así cuidas tu WhatsApp.' : w ? `Espera ${w} s antes del siguiente (para que WhatsApp no te marque como spam).` : `Puedes enviar el siguiente. Te quedan ${TOPE - n} hoy.`) + `<div class="barra"><i style="width:${Math.min(100, n / TOPE * 100)}%"></i></div>`;
+  document.querySelectorAll('[data-env]').forEach((b) => b.classList.toggle('bloq', lleno || w > 0));
+}
+setInterval(cupo, 1000);
 const ZONAS = ['Colón', 'Panamá Oeste', 'Ciudad de Panamá', 'Todas'];
 if (!cfg.zona) cfg.zona = 'Colón';
 
@@ -120,6 +137,7 @@ function guion(n) {
 }
 
 function pintar() {
+  setTimeout(cupo);
   $('#falta-link').style.display = cfg.link ? 'none' : '';
   $('#zonas').innerHTML = ZONAS.map((z) => `<button class="chip ${cfg.zona === z ? 'on' : ''}" data-z="${z}">${z} (${z === 'Todas' ? NEG.length : NEG.filter((n) => n.region === z).length})</button>`).join('');
   const BASE = cfg.zona === 'Todas' ? NEG : NEG.filter((n) => n.region === cfg.zona);
@@ -160,12 +178,14 @@ document.addEventListener('click', (e) => {
   const f = e.target.closest('[data-f]'); if (f) { filtro = f.dataset.f; limite = 40; pintar(); return; }
   const z = e.target.closest('[data-z]'); if (z) { cfg.zona = z.dataset.z; limite = 40; guardar(); pintar(); return; }
   if (e.target.closest('[data-mas]')) { limite += 40; pintar(); return; }
-  const ok = e.target.closest('[data-ok]'); if (ok) { const id = ok.dataset.ok; st[id] = { ...st[id], ok: !st[id]?.ok, fecha: new Date().toISOString().slice(0, 10) }; guardar(); pintar(); return; }
-  const env = e.target.closest('[data-env]'); if (env && env.getAttribute('aria-disabled') !== 'true') { const id = env.dataset.env; setTimeout(() => { st[id] = { ...st[id], ok: true, fecha: new Date().toISOString().slice(0, 10) }; guardar(); pintar(); }, 800); }
+  const ok = e.target.closest('[data-ok]'); if (ok) { const id = ok.dataset.ok; st[id] = { ...st[id], ok: !st[id]?.ok, fecha: hoy() }; guardar(); pintar(); return; }
+  const env = e.target.closest('[data-env]'); if (env && env.getAttribute('aria-disabled') !== 'true') {
+    if (enviadosHoy() >= TOPE || faltaEspera() > 0) { e.preventDefault(); cupo(); $('#cupo').scrollIntoView({ block: 'nearest' }); return; }
+    cfg.ult = Date.now(); guardar(); const id = env.dataset.env; setTimeout(() => { st[id] = { ...st[id], ok: true, fecha: hoy() }; guardar(); pintar(); }, 800); }
 });
 document.addEventListener('change', (e) => {
   const n = e.target.dataset.num; if (n !== undefined) { const d = e.target.value.replace(/\D/g, '').replace(/^507/, ''); st[n] = { ...st[n], num: d.length === 8 && d[0] === '6' ? d : undefined }; if (d && !st[n].num) alert('Ese número no parece un celular de Panamá (8 dígitos que empiezan por 6).'); guardar(); pintar(); }
   const m = e.target.dataset.msg; if (m !== undefined) { st[m] = { ...st[m], msg: e.target.value }; guardar(); pintar(); }
 });
-pintar();
+pintar(); cupo();
 </script></body></html>
