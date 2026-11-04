@@ -1,0 +1,52 @@
+PLAN DE ESTA SEMANA: 4 CLIENTES  (04/11/2026)
+
+ENLACES QUE YA FUNCIONAN
+- Tu portafolio:  https://edwin2030-cmd.github.io/dek-portafolio/
+- Demo de sistema (ferretería):  https://edwin2030-cmd.github.io/dek-portafolio/demo/
+- Muestras hechas con el nombre de cada negocio:
+  1. Taller Auto Fino ...... /muestras/taller-auto-fino/      Tel. 441-3122 (fijo)
+  2. Taller Don Bosco ...... /muestras/taller-don-bosco/      Tel. 447-0070 (fijo)
+  3. MC Place (taller) ..... /muestras/mc-place/              WhatsApp 6022-1313
+  4. Quality Paint Shop .... /muestras/quality-paint-shop/    WhatsApp 6614-6792
+  5. Ferretería Colón ...... /muestras/ferreteria-colon/      Tel. 445-1338 (fijo)
+  6. Ferretería Anthony .... /muestras/ferreteria-anthony/    Tel. 441-4643 (fijo), Av. Herrera
+  7. Punto Cuatro (fiestas)  /muestras/punto-cuatro/          Tel. 433-2582 (fijo), Calle 13
+  8. Panadería Colón ....... /muestras/panaderia-colon/       Tel. 441-3941 (fijo), Av. Herrera
+  (Delante de cada /muestras/... va https://edwin2030-cmd.github.io/dek-portafolio)
+
+OFERTA DE LANZAMIENTO (solo los primeros 4, hasta el domingo)
+- Página $150 (antes $200) · Catálogo $350 (antes $450) · NovaCore primer mes gratis ($20/mes después)
+- 50% para empezar (Yappy, transferencia o efectivo) y 50% al entregar. 30 días de garantía.
+
+HOY (miércoles)
+[ ] Abre "Enviar mensajes por WhatsApp.html", pon tu nombre arriba y manda los de MC Place y Quality Paint Shop.
+[ ] Pon en tu estado de WhatsApp la muestra de la panadería y la demo de la ferretería:
+    "Hago páginas, catálogos y sistemas para negocios de Colón. Esta semana con precio de lanzamiento. Escríbeme."
+[ ] Escribe a 10 conocidos que tengan negocio o conozcan a alguien (familia, amigos, la heladería Dulzuras Belgis).
+
+JUEVES: VISITAS EN PERSONA (lo que más funciona)
+Ruta a pie por el centro: Av. Herrera (Ferretería Anthony, Panadería Colón) -> Calle 13 (Punto Cuatro)
+-> Av. Central / Calle 13-14 (Taller Auto Fino) -> Av. Meléndez (Quality Paint Shop).
+Lleva el celular cargado con la muestra de ESE negocio ya abierta.
+Qué decir (30 segundos):
+  "Buenas, soy [tu nombre], de aquí de Colón. Hago páginas y sistemas para negocios.
+   Le preparé esta muestra con el nombre de su negocio, mírela [le das el celular].
+   Sus clientes eligen lo que quieren y el pedido le llega a su WhatsApp ya escrito.
+   Esta semana la tengo a $150 en vez de $200. Si le gusta, con la mitad empiezo hoy
+   y en 5 días la tiene funcionando con sus fotos y sus precios."
+Si dice "lo voy a pensar": "Perfecto, ¿le paso el enlace por WhatsApp para que la vea con calma?"
+  -> pídele su WhatsApp. Eso ya es un avance.
+Si pregunta por el sistema: enséñale la demo de la ferretería o explica NovaCore (primer mes gratis).
+Visita también 10 negocios más de la lista (Excel), aunque no tengan muestra: "¿Le hago una muestra gratis?"
+
+VIERNES
+[ ] Manda el mensaje de "seguimiento" a todos los que no respondieron.
+[ ] A los que dijeron que sí: pídeles fotos, lista de precios y logo. Avísame y lo dejo listo.
+[ ] A los interesados sin muestra: dime el negocio y les hago la suya ese mismo día.
+
+SÁBADO Y DOMINGO
+[ ] Último aviso de la oferta: "La oferta de lanzamiento termina hoy."
+[ ] Cobra el 50% a los que confirmaron.
+
+META REALISTA: unos 40 negocios contactados -> unos 10 interesados -> 4 clientes.
+Cuando alguien diga que sí, abre "Continuar chat con Claude.bat" y dime quién es.

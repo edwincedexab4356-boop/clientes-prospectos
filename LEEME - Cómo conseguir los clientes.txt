@@ -1,0 +1,43 @@
+CLIENTES - PROSPECTOS EN COLÓN (creado el 04/11/2026)
+
+QUÉ HAY EN ESTA CARPETA
+- "Prospectos Colón.xlsx": 99 negocios de Colón, Sabanitas y Cativa que no tienen página web.
+    * Hoja "Prospectos": prioridad, rubro, dirección, teléfono (17 lo tienen),
+      qué ofrecerle, precio de referencia y un enlace "Abrir mapa" para cada uno.
+    * Columna "Estado": elige Pendiente / Contactado / Respondió / Reunión / Cliente...
+    * Hoja "Mensajes": un mensaje de WhatsApp listo para cada rubro.
+- "Enviar mensajes por WhatsApp.html": ábrelo, pon tu nombre y el enlace del portafolio,
+  y en cada negocio pulsa "Enviar por WhatsApp": se abre con el mensaje listo
+  (catálogo digital, página web y sistema a medida). Máximo 15-20 al día.
+- "Continuar chat con Claude.bat": para seguir con esto conmigo.
+
+DE DÓNDE SALIERON LOS DATOS
+- OpenStreetMap (mapa público), listas de talleres autorizados de aseguradoras,
+  Páginas Amarillas y redes sociales. Algunos datos pueden ser viejos:
+  ANTES DE ESCRIBIR, abre "Abrir mapa" y comprueba que el negocio sigue abierto.
+  Ahí mismo sale su teléfono, su WhatsApp y si ya tiene página web.
+
+ORDEN RECOMENDADO
+1. Prioridad 1 (verde): talleres, ferreterías y eventos. Para ellos ya tienes algo
+   listo para enseñar: NovaCore y la demo de la Ferretería El Faro.
+2. Prioridad 2 (amarillo): el resto de ferreterías y talleres, panaderías, salones y clínicas.
+3. Prioridad 3 y 4: restaurantes, fondas, cafés y lavanderías.
+
+CÓMO CONTACTARLOS
+- Teléfono que empieza por 6 (celular): mensaje por WhatsApp (hoja "Mensajes").
+- Teléfono que empieza por 4 (fijo): llama o, mejor, pasa por el local.
+  En Colón lo que más funciona es ir en persona con la demo abierta en el celular.
+- Escribe a 5-10 negocios al día. Si no responden en 3 días, manda el mensaje de "seguimiento".
+- Cambia [TU NOMBRE] y [ENLACE] por tu nombre y el enlace del portafolio en Vercel.
+- No mandes el mismo mensaje en masa: personaliza el saludo con el nombre del negocio.
+
+PARA ENCONTRAR MÁS NEGOCIOS (Google Maps)
+- Busca "taller", "ferretería", "barbería", "fonda", "repostería" + "Colón".
+- Abre cada uno: si NO tiene "Sitio web", es un buen prospecto. Anótalo en el Excel.
+- Instagram y TikTok: busca #colonpanama, #sabanitas, #cuatroaltos y negocios con
+  "pedidos al WhatsApp" en la descripción.
+
+PRECIOS (los mismos del portafolio)
+- Presentación $200 · Web $380 · Catálogo con pedidos $450 · Tienda $700
+- Caja/reportes $350 · Sistema desde $900 · NovaCore $20/mes
+- Pago 50/50 · 30 días de garantía.
