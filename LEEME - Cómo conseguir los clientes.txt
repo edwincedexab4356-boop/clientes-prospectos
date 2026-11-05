@@ -1,14 +1,17 @@
 CLIENTES - PROSPECTOS EN COLÓN (creado el 04/11/2026)
 
 QUÉ HAY EN ESTA CARPETA
-- "Prospectos Colón.xlsx": 99 negocios de Colón, Sabanitas y Cativa que no tienen página web.
+- "Prospectos Colón.xlsx": todos los negocios (Colón, Panamá Oeste y Ciudad de Panamá).
     * Hoja "Prospectos": prioridad, rubro, dirección, teléfono (17 lo tienen),
       qué ofrecerle, precio de referencia y un enlace "Abrir mapa" para cada uno.
     * Columna "Estado": elige Pendiente / Contactado / Respondió / Reunión / Cliente...
     * Hoja "Mensajes": un mensaje de WhatsApp listo para cada rubro.
 - "Enviar mensajes por WhatsApp.html": ábrelo, pon tu nombre y el enlace del portafolio,
   y en cada negocio pulsa "Enviar por WhatsApp": se abre con el mensaje listo
-  (catálogo digital, página web y sistema a medida). Máximo 15-20 al día.
+  (catálogo digital, página web y sistema a medida). Máximo 40 al día (la página te frena sola).
+  Tiene seguimientos, respuestas listas, marca de clientes y tus resultados.
+- "ruta-visitas.html": los negocios de Colón por sector, para visitarlos en persona.
+- "PLAN DE ESTA SEMANA - 4 clientes.txt": la rutina de cada día. EMPIEZA POR AHÍ.
 - "Continuar chat con Claude.bat": para seguir con esto conmigo.
 
 DE DÓNDE SALIERON LOS DATOS
@@ -27,7 +30,7 @@ CÓMO CONTACTARLOS
 - Teléfono que empieza por 6 (celular): mensaje por WhatsApp (hoja "Mensajes").
 - Teléfono que empieza por 4 (fijo): llama o, mejor, pasa por el local.
   En Colón lo que más funciona es ir en persona con la demo abierta en el celular.
-- Escribe a 5-10 negocios al día. Si no responden en 3 días, manda el mensaje de "seguimiento".
+- Hasta 40 negocios al día. A los 3 días sin respuesta salen en "⏰ Para seguimiento".
 - Cambia [TU NOMBRE] y [ENLACE] por tu nombre y el enlace del portafolio en Vercel.
 - No mandes el mismo mensaje en masa: personaliza el saludo con el nombre del negocio.
 

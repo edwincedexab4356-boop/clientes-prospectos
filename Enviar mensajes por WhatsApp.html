@@ -29,9 +29,18 @@ details summary{cursor:pointer;color:var(--acc);font-size:13px;margin-top:8px}
 #cupo.espera{background:#2a1d0b;border-color:#6b4f1a}#cupo.lleno{background:#2a0f12;border-color:#7f1d1d}
 #cupo .barra{height:6px;border-radius:3px;background:#243047;margin-top:6px;overflow:hidden}#cupo .barra i{display:block;height:100%;background:var(--ok)}
 .btn.wa.bloq{opacity:.45;cursor:not-allowed}
+.btn.cli{background:#5b3a8a;color:#fff}.tag.cli{background:#2d1f47;color:#c4a5ff}
+.rapidas{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center}.rapidas a{font-size:12px;padding:6px 10px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 16px}
+.panel summary{font-weight:600;color:var(--text);font-size:15px;margin:0}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:12px 0}
+.kpi{background:#0d1320;border:1px solid var(--line);border-radius:12px;padding:10px}.kpi b{display:block;font-size:22px}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+.diag{background:#0f1a2e;border:1px solid #1f3b6b;border-radius:10px;padding:10px 12px;font-size:14px;margin-top:10px}
+.copiar{font-size:12px;padding:5px 10px}.rq{border-top:1px solid var(--line);padding:10px 0}.rq p{white-space:pre-wrap;margin:6px 0;font-size:13px}
 </style></head><body>
 <header>
-  <h1>Negocios con WhatsApp</h1>
+  <h1>Negocios con WhatsApp <a class="btn alt" style="float:right;font-size:13px" href="ruta-visitas.html" target="_blank">🚶 Ruta de visitas en Colón</a></h1>
   <div class="muted sm">Pulsa <b>Enviar por WhatsApp</b>: se abre WhatsApp con el mensaje listo y tú solo das a enviar. Lo que marques como enviado se guarda en este navegador. A los 3 días, los que no te respondieron aparecen en <b>⏰ Para seguimiento</b>; cuando alguien te conteste, pulsa <b>💬 Me respondió</b>.</div>
   <div class="cfg">
     <label>Tu nombre (va en el saludo)<input id="yo" placeholder="Ej: Edwin"></label>
@@ -41,14 +50,18 @@ details summary{cursor:pointer;color:var(--acc);font-size:13px;margin-top:8px}
       <option value="catalogo">Solo catálogo digital</option>
       <option value="web">Solo página web</option>
       <option value="sistema">Solo sistema a medida</option></select></label>
+    <label>Tipo de negocio (mejor uno a la vez)<select id="rubro"><option value="">Todos los tipos</option></select></label>
+    <label>Tu primer cliente (para mencionarlo)<input id="ref" placeholder="Ej: Taller MC Place"></label>
   </div>
   <div class="bar" id="zonas"></div>
   <div class="bar" id="filtros"></div>
   <div id="cupo"></div>
 </header>
 <main>
-  <div class="aviso">Para no tener problemas con WhatsApp: <b>máximo 40 mensajes por día</b> (la página no te deja pasar de ahí) y al menos 90 segundos entre uno y otro. Escribe primero a los que tienen celular (empieza por 6) Los teléfonos que empiezan por 4 son fijos: ahí no hay WhatsApp; llama o pasa por el local (abajo de cada uno tienes qué decir).</div>
+  <div class="aviso">Para no tener problemas con WhatsApp: <b>máximo 40 mensajes por día</b> (la página no te deja pasar de ahí) y al menos 90 segundos entre uno y otro. Escribe primero a los que tienen celular (empieza por 6). Los teléfonos que empiezan por 4 son fijos: ahí no hay WhatsApp; llama o pasa por el local (abajo de cada uno tienes qué decir), o mejor, visítalos con la <b>Ruta de visitas</b>.</div>
   <div class="aviso" id="falta-link" style="border-color:#7f1d1d;background:#2a0f12">Primero escribe arriba el <b>enlace de tu portafolio</b> (el de Vercel). Hasta entonces los botones de WhatsApp están apagados, para que no salga un mensaje sin enlace.</div>
+  <details class="panel" id="stats"></details>
+  <details class="panel" id="rapidas-panel"><summary>💬 Respuestas listas (para cuando te contesten)</summary><div id="rapidas-lista"></div></details>
   <div id="lista"></div>
 </main>
 <script>
@@ -94,7 +107,7 @@ localStorage.setItem('dek-envios', JSON.stringify(st));
 const cfg = JSON.parse(localStorage.getItem('dek-envios-cfg') || '{}');
 if (!cfg.link) cfg.link = 'https://edwin2030-cmd.github.io/dek-portafolio/';
 const guardar = () => { localStorage.setItem('dek-envios', JSON.stringify(st)); localStorage.setItem('dek-envios-cfg', JSON.stringify(cfg)); };
-['yo', 'link', 'oferta'].forEach((k) => { if (cfg[k]) $('#' + k).value = cfg[k]; $('#' + k).addEventListener('input', () => { cfg[k] = $('#' + k).value; guardar(); pintar(); }); });
+['yo', 'link', 'oferta', 'ref'].forEach((k) => { if (cfg[k]) $('#' + k).value = cfg[k]; $('#' + k).addEventListener('input', () => { cfg[k] = $('#' + k).value; guardar(); pintar(); }); });
 let filtro = 'pendientes', limite = 40;
 const TOPE = 40, ESPERA = 90; // mensajes por día y segundos mínimos entre mensajes
 const hoy = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
@@ -116,6 +129,9 @@ function cupo() {
   document.querySelectorAll('[data-env]').forEach((b) => b.classList.toggle('bloq', lleno || w > 0));
 }
 setInterval(cupo, 1000);
+const RUBROS = [...new Set(NEG.map((n) => n.rubro))].sort();
+$('#rubro').innerHTML += RUBROS.map((r) => `<option value="${r}">${r[0].toUpperCase() + r.slice(1)} (${NEG.filter((n) => n.rubro === r).length})</option>`).join('');
+$('#rubro').value = cfg.rubro || ''; $('#rubro').addEventListener('change', () => { cfg.rubro = $('#rubro').value; limite = 40; guardar(); pintar(); });
 const ZONAS = ['Colón', 'Panamá Oeste', 'Ciudad de Panamá', 'Todas'];
 if (!cfg.zona) cfg.zona = 'Colón';
 
@@ -138,7 +154,40 @@ function mensaje(n) {
   else if (o === 'web') cuerpo = `Le puedo hacer ${web}. Desde $200.`;
   else if (o === 'sistema') cuerpo = `Le puedo hacer ${sis}. Funciona en el celular y la computadora.`;
   else cuerpo = `Ayudo a negocios de aquí con tres cosas, y puede tomar una o las tres juntas con precio especial:\n\n1) *Catálogo digital*: ${CAT[r]} en línea; el cliente arma su pedido y le llega a su WhatsApp ya escrito.\n2) *Página web*: para que lo encuentren en Google, con su ubicación, horario y botón de WhatsApp.\n3) *Sistema a medida*: ${sis.replace(/^un sistema /, '')}.`;
-  return `Hola, buenas. ¿Hablo con *${limpiaNombre(n.nombre)}*? ${yo}, ${n.region === 'Colón' ? 'aquí en Colón' : 'desde Colón (trabajo con negocios de todo Panamá)'}.\n\n${cuerpo}${n.muestra ? `\n\nYa le preparé una *muestra con el nombre de su negocio* para que vea cómo quedaría: ${MUESTRAS}${n.muestra}/` : ''}\n\nEsta semana tengo *precio de lanzamiento* para los primeros 4 negocios: página $150, catálogo $350 y el primer mes del sistema gratis.\n\nMis trabajos: ${link}\n\n${n.muestra ? '¿Qué le parece? Si le gusta, se la dejo lista con sus fotos y precios.' : '¿Le gustaría que le prepare una muestra para su negocio? Sin compromiso.'}`;
+  return `Hola, buenas. ¿Hablo con *${limpiaNombre(n.nombre)}*? ${yo}, ${n.region === 'Colón' ? 'aquí en Colón' : 'desde Colón (trabajo con negocios de todo Panamá)'}.${cfg.ref ? ` Ya trabajo con *${cfg.ref}*.` : ''}\n\n${cuerpo}${n.muestra ? `\n\nYa le preparé una *muestra con el nombre de su negocio* para que vea cómo quedaría: ${MUESTRAS}${n.muestra}/` : ''}\n\nEsta semana tengo *precio de lanzamiento* para los primeros 4 negocios: página $150, catálogo $350 y el primer mes del sistema gratis. Paga la mitad al empezar y la otra mitad al entregar (Yappy o transferencia).\n\nMis trabajos: ${link}\n\n${n.muestra ? '¿Qué le parece? Si le gusta, se la dejo lista con sus fotos y precios.' : '¿Le gustaría que le prepare una muestra para su negocio? Sin compromiso.'}`;
+}
+const RESP = [
+  ['precio', '💲 Precio', (n) => `¡Con gusto! Para *${limpiaNombre(n.nombre)}*:\n\n• Página web: *$150* (precio de lanzamiento; normal $200)\n• Catálogo con pedidos por WhatsApp: *$350* (normal $450)\n• Sistema: ${SIS[n.rubro] || SIS.otro}. *Primer mes gratis*, después $20 al mes.\n\nPaga la mitad para empezar y la otra mitad cuando esté funcionando, por Yappy o transferencia. Tiene 30 días de garantía.\n\n¿Le llamo 5 minutos y le explico cuál le conviene más?`],
+  ['llamada', '📞 Pedir llamada', () => `¿Le puedo llamar 5 minutos hoy y se lo explico mejor? ¿A qué hora le queda bien?`],
+  ['pensar', '🤔 "Lo voy a pensar"', (n) => `¡Claro, sin presión! Le dejo la muestra para que la vea con calma${n.muestra ? `: ${MUESTRAS}${n.muestra}/` : '.'}\n\nEl precio de lanzamiento se lo guardo hasta el domingo. Cualquier duda me escribe por aquí.`],
+  ['caro', '💸 "Está caro"', () => `Le entiendo. Para que no sea un gasto de golpe, lo puede pagar en dos partes: la mitad para empezar y la otra mitad cuando ya esté funcionando.\n\nY piense que con *un solo cliente nuevo* al mes que lo encuentre por ahí, ya se paga. Si prefiere, empezamos solo con la página de $150 y luego le agregamos lo demás.`],
+  ['si', '✅ Dijo que sí', () => `¡Excelente, gracias por la confianza! 🙌 Para dejarla lista necesito:\n\n1) Su logo (si tiene)\n2) Fotos de sus productos, servicios o del local\n3) La lista de precios\n4) Horario y dirección\n\nMe lo puede mandar por aquí. Con el 50% (Yappy o transferencia) empiezo hoy y en unos 5 días la tiene funcionando.`],
+  ['mensual', '🔁 Mantenimiento $15/mes', () => `Además, si quiere, yo me encargo de mantenerla: cambiar precios, fotos y promociones cuando usted me diga, y que siempre esté en línea. Son *$15 al mes* y usted no se preocupa de nada.`],
+  ['referir', '🤝 Pedir recomendados', () => `Gracias otra vez por confiar en mí. Si conoce otro negocio al que le sirva algo así, recomiéndeme: *por cada uno que me contrate, le regalo un mes de mantenimiento*.`],
+  ['testimonio', '⭐ Pedir opinión', () => `¿Me haría un favor? Escríbame en una o dos líneas qué le pareció el trabajo, y dígame si me deja mostrar su página como ejemplo a otros negocios. Me ayuda muchísimo. ¡Gracias!`],
+];
+const EJ = { nombre: 'su negocio', rubro: 'otro', muestra: '' };
+function pintarRapidas() {
+  $('#rapidas-lista').innerHTML = '<p class="muted sm">En cada negocio que marques como <b>💬 Me respondió</b> salen estos botones con su nombre y su WhatsApp. Aquí los puedes copiar.</p>' +
+    RESP.map(([k, l, f]) => `<div class="rq"><b>${l}</b> <button class="btn alt copiar" data-copiar="${k}">Copiar</button><p>${f(EJ).replace(/</g, '&lt;')}</p></div>`).join('');
+}
+function pintarStats() {
+  const env = NEG.filter((n) => st[n.id]?.ok), resp = env.filter((n) => st[n.id]?.resp), cli = NEG.filter((n) => st[n.id]?.cli);
+  const pct = (a, b) => b ? Math.round(a / b * 100) + '%' : '—';
+  const por = {}; env.forEach((n) => { const r = por[n.rubro] = por[n.rubro] || [0, 0, 0]; r[0]++; if (st[n.id]?.resp) r[1]++; if (st[n.id]?.cli) r[2]++; });
+  const filas = Object.entries(por).sort((a, b) => b[1][1] / b[1][0] - a[1][1] / a[1][0] || b[1][0] - a[1][0]);
+  let diag;
+  if (env.length < 50) diag = `Todavía son pocos (${env.length}) para sacar conclusiones. Cuando pases de 50 enviados, aquí te digo qué cambiar.`;
+  else if (resp.length / env.length < 0.05) diag = `Te responde menos del 5%: <b>cambia el mensaje</b>. Prueba en "Qué ofrecer" con una sola opción (más corto) y empieza por los tipos de negocio que más responden en la tabla.`;
+  else if (resp.length >= 10 && cli.length / resp.length < 0.1) diag = `Te responden, pero pocos compran: el problema está en <b>cómo cierras</b>. Pide siempre la llamada de 5 minutos (botón 📞) y ofrece el pago en dos partes.`;
+  else diag = `Vas bien. Sigue con los tipos de negocio que más responden y no olvides los seguimientos.`;
+  const abierto = $('#stats').open;
+  $('#stats').innerHTML = `<summary>📊 Tus resultados: ${env.length} enviados · ${resp.length} respondieron · ${cli.length} clientes</summary>
+    <div class="kpis"><div class="kpi"><b>${env.length}</b>enviados</div><div class="kpi"><b>${pct(resp.length, env.length)}</b>te responden</div>
+    <div class="kpi"><b>${pct(cli.length, resp.length)}</b>de los que responden compran</div><div class="kpi"><b>${cli.length}</b>clientes</div></div>
+    ${filas.length ? `<table><tr><th>Tipo de negocio</th><th>Enviados</th><th>Respondieron</th><th>Clientes</th></tr>${filas.map(([r, [a, b, c]]) => `<tr><td>${r}</td><td>${a}</td><td>${b} (${pct(b, a)})</td><td>${c}</td></tr>`).join('')}</table>` : ''}
+    <div class="diag">${diag}</div>`;
+  $('#stats').open = abierto;
 }
 function guion(n) {
   return `Buenas, ¿hablo con ${limpiaNombre(n.nombre)}? Mi nombre es ${cfg.yo || '[tu nombre]'}, de D.E.K NovaCore, ${n.region === 'Colón' ? 'aquí en Colón' : 'de Colón'}. Hago catálogos digitales, páginas web y sistemas para negocios. ¿Con quién puedo hablar sobre eso? ... Le quería ofrecer ${SIS[n.rubro]}, y una página o catálogo para que le pidan por WhatsApp. ¿Me da un WhatsApp para mandarle ejemplos?`;
@@ -148,15 +197,17 @@ function pintar() {
   setTimeout(cupo);
   $('#falta-link').style.display = cfg.link ? 'none' : '';
   $('#zonas').innerHTML = ZONAS.map((z) => `<button class="chip ${cfg.zona === z ? 'on' : ''}" data-z="${z}">${z} (${z === 'Todas' ? NEG.length : NEG.filter((n) => n.region === z).length})</button>`).join('');
-  const BASE = cfg.zona === 'Todas' ? NEG : NEG.filter((n) => n.region === cfg.zona);
-  const cuenta = { seguimiento: BASE.filter(toca).length, respondieron: BASE.filter((n) => st[n.id]?.resp).length, pendientes: 0, celular: 0, enviados: 0, todos: BASE.length };
+  const BASE = NEG.filter((n) => (cfg.zona === 'Todas' || n.region === cfg.zona) && (!cfg.rubro || n.rubro === cfg.rubro));
+  pintarStats();
+  const cuenta = { seguimiento: BASE.filter(toca).length, respondieron: BASE.filter((n) => st[n.id]?.resp && !st[n.id]?.cli).length, clientes: BASE.filter((n) => st[n.id]?.cli).length, pendientes: 0, celular: 0, enviados: 0, todos: BASE.length };
   BASE.forEach((n) => { const num = st[n.id]?.num || celular(n.tel); if (!st[n.id]?.ok) cuenta.pendientes++; else cuenta.enviados++; if (num && !st[n.id]?.ok) cuenta.celular++; });
-  $('#filtros').innerHTML = [['seguimiento', '⏰ Para seguimiento'], ['respondieron', '💬 Respondieron'], ['celular', 'Con WhatsApp'], ['pendientes', 'Pendientes'], ['enviados', 'Enviados'], ['todos', 'Todos']]
+  $('#filtros').innerHTML = [['seguimiento', '⏰ Para seguimiento'], ['respondieron', '💬 Respondieron'], ['clientes', '⭐ Clientes'], ['celular', 'Con WhatsApp'], ['pendientes', 'Pendientes'], ['enviados', 'Enviados'], ['todos', 'Todos']]
     .map(([k, l]) => `<button class="chip ${filtro === k ? 'on' : ''}" data-f="${k}">${l} (${cuenta[k]})</button>`).join('');
   const vis = BASE.filter((n) => {
     const num = st[n.id]?.num || celular(n.tel);
     if (filtro === 'seguimiento') return toca(n);
-    if (filtro === 'respondieron') return !!st[n.id]?.resp;
+    if (filtro === 'respondieron') return !!st[n.id]?.resp && !st[n.id]?.cli;
+    if (filtro === 'clientes') return !!st[n.id]?.cli;
     return filtro === 'todos' || (filtro === 'enviados' ? st[n.id]?.ok : !st[n.id]?.ok && (filtro !== 'celular' || num));
   });
   const sc = (n) => (st[n.id]?.num || celular(n.tel) ? 2 : 0) + (n.muestra ? 1 : 0);
@@ -168,7 +219,7 @@ function pintar() {
     const msg = sg ? seguimiento(n) : s.msg || mensaje(n);
     const listo = num && cfg.link;
     const wa = listo ? `https://wa.me/507${num}?text=${encodeURIComponent(msg)}` : '#';
-    const estado = s.resp ? '<span class="tag ok">💬 Respondió</span>' : s.seg ? `<span class="tag">Seguimiento enviado hace ${dias(s.seg)} día(s)</span>` : s.ok ? `<span class="tag">Enviado hace ${dias(s.fecha)} día(s)</span>` : '';
+    const estado = s.cli ? '<span class="tag cli">⭐ Cliente</span>' : s.resp ? '<span class="tag ok">💬 Respondió</span>' : s.seg ? `<span class="tag">Seguimiento enviado hace ${dias(s.seg)} día(s)</span>` : s.ok ? `<span class="tag">Enviado hace ${dias(s.fecha)} día(s)</span>` : '';
     return `<div class="card ${sg ? 'toca' : s.ok ? 'hecho' : ''}" data-id="${n.id}">
       <div class="top"><div><b>${n.nombre}</b><div class="muted sm">${n.zona}</div></div>
         <div><span class="tag ${n.prio === 1 ? 'p1' : n.prio === 2 ? 'p2' : ''}">Prioridad ${n.prio}</span><span class="tag">${n.rubro}</span>${estado}${n.muestra ? `<a class="tag p1" href="${MUESTRAS}${n.muestra}/" target="_blank" rel="noopener">Ver su muestra</a>` : ''}</div></div>
@@ -179,7 +230,9 @@ function pintar() {
         <input class="num" data-num="${n.id}" placeholder="WhatsApp: 6xxx-xxxx" value="${st[n.id]?.num ? bonito(st[n.id].num) : ''}">
         <button class="btn ok" data-ok="${n.id}">${st[n.id]?.ok ? '✓ Enviado (deshacer)' : 'Marcar enviado'}</button>
         ${s.ok ? `<button class="btn resp" data-resp="${n.id}">${s.resp ? '↩ Quitar "respondió"' : '💬 Me respondió'}</button>` : ''}
+        ${s.resp ? `<button class="btn cli" data-cli="${n.id}">${s.cli ? '↩ Quitar "cliente"' : '⭐ Ya es cliente'}</button>` : ''}
       </div>
+      ${s.resp && num ? `<div class="rapidas"><span class="muted sm">Responder:</span>${RESP.filter(([k]) => s.cli ? ['si', 'mensual', 'referir', 'testimonio'].includes(k) : !['referir', 'testimonio'].includes(k)).map(([k, l, f]) => `<a class="btn alt" href="https://wa.me/507${num}?text=${encodeURIComponent(f(n))}" target="_blank" rel="noopener">${l}</a>`).join('')}</div>` : ''}
       <details><summary>${sg ? 'Ver el mensaje de seguimiento' : 'Ver o cambiar el mensaje'}${fijos.length && !num ? ' · qué decir si llamas' : ''}</summary>
         <textarea ${sg ? 'readonly' : `data-msg="${n.id}"`}>${msg.replace(/</g, '&lt;')}</textarea>
         ${fijos.length ? `<p class="muted sm"><b>Si llamas:</b> ${guion(n)}</p>` : ''}
@@ -192,6 +245,8 @@ document.addEventListener('click', (e) => {
   const z = e.target.closest('[data-z]'); if (z) { cfg.zona = z.dataset.z; limite = 40; guardar(); pintar(); return; }
   if (e.target.closest('[data-mas]')) { limite += 40; pintar(); return; }
   const ok = e.target.closest('[data-ok]'); if (ok) { const id = ok.dataset.ok; st[id] = { ...st[id], ok: !st[id]?.ok, fecha: hoy() }; guardar(); pintar(); return; }
+  const cp = e.target.closest('[data-copiar]'); if (cp) { const r = RESP.find(([k]) => k === cp.dataset.copiar); navigator.clipboard.writeText(r[2](EJ)).then(() => { cp.textContent = '✓ Copiado'; setTimeout(() => { cp.textContent = 'Copiar'; }, 1500); }); return; }
+  const cl = e.target.closest('[data-cli]'); if (cl) { const id = cl.dataset.cli; st[id] = { ...st[id], cli: !st[id]?.cli }; guardar(); pintar(); return; }
   const rp = e.target.closest('[data-resp]'); if (rp) { const id = rp.dataset.resp; st[id] = { ...st[id], resp: !st[id]?.resp }; guardar(); pintar(); return; }
   const env = e.target.closest('[data-env]'); if (env && env.getAttribute('aria-disabled') !== 'true') {
     if (enviadosHoy() >= TOPE || faltaEspera() > 0) { e.preventDefault(); cupo(); $('#cupo').scrollIntoView({ block: 'nearest' }); return; }
@@ -201,5 +256,5 @@ document.addEventListener('change', (e) => {
   const n = e.target.dataset.num; if (n !== undefined) { const d = e.target.value.replace(/\D/g, '').replace(/^507/, ''); st[n] = { ...st[n], num: d.length === 8 && d[0] === '6' ? d : undefined }; if (d && !st[n].num) alert('Ese número no parece un celular de Panamá (8 dígitos que empiezan por 6).'); guardar(); pintar(); }
   const m = e.target.dataset.msg; if (m !== undefined) { st[m] = { ...st[m], msg: e.target.value }; guardar(); pintar(); }
 });
-pintar(); cupo();
+pintarRapidas(); pintar(); cupo();
 </script></body></html>

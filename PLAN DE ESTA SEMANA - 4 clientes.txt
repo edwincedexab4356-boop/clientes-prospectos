@@ -1,53 +1,46 @@
-PLAN DE ESTA SEMANA: 4 CLIENTES  (04/11/2026)
+PLAN PARA CONSEGUIR CLIENTES  (actualizado 04/11/2026)
 
-ENLACES QUE YA FUNCIONAN
+ENLACES
+- Página de envío (desde el celular o la compu):
+    https://edwincedexab4356-boop.github.io/clientes-prospectos/
+- Ruta de visitas en Colón:
+    https://edwincedexab4356-boop.github.io/clientes-prospectos/ruta-visitas.html
 - Tu portafolio:  https://edwin2030-cmd.github.io/dek-portafolio/
 - Demo de sistema (ferretería):  https://edwin2030-cmd.github.io/dek-portafolio/demo/
-- Muestras hechas con el nombre de cada negocio:
-  1. Taller Auto Fino ...... /muestras/taller-auto-fino/      Tel. 441-3122 (fijo)
-  2. Taller Don Bosco ...... /muestras/taller-don-bosco/      Tel. 447-0070 (fijo)
-  3. MC Place (taller) ..... /muestras/mc-place/              WhatsApp 6022-1313
-  4. Quality Paint Shop .... /muestras/quality-paint-shop/    WhatsApp 6614-6792
-  5. Ferretería Colón ...... /muestras/ferreteria-colon/      Tel. 445-1338 (fijo)
-  6. Ferretería Anthony .... /muestras/ferreteria-anthony/    Tel. 441-4643 (fijo), Av. Herrera
-  7. Punto Cuatro (fiestas)  /muestras/punto-cuatro/          Tel. 433-2582 (fijo), Calle 13
-  8. Panadería Colón ....... /muestras/panaderia-colon/       Tel. 441-3941 (fijo), Av. Herrera
-  (Delante de cada /muestras/... va https://edwincedexab4356-boop.github.io/clientes-prospectos)
-  En total hay 247 negocios con WhatsApp en la página de envío, todos con su muestra ("Ver su muestra").
+- 1719 negocios con WhatsApp (250 de Colón, 523 de Panamá Oeste, 946 de Ciudad de Panamá),
+  cada uno con su muestra hecha con el nombre de su negocio.
+  IMPORTANTE: usa siempre el mismo navegador; lo que marcas se guarda en ese navegador.
 
-OFERTA DE LANZAMIENTO (solo los primeros 4, hasta el domingo)
+OFERTA DE LANZAMIENTO
 - Página $150 (antes $200) · Catálogo $350 (antes $450) · NovaCore primer mes gratis ($20/mes después)
 - 50% para empezar (Yappy, transferencia o efectivo) y 50% al entregar. 30 días de garantía.
+- Mantenimiento opcional: $15/mes (cambios de precios, fotos y promociones).
+- Recomendados: por cada negocio que te recomienden y te contrate, 1 mes de mantenimiento gratis.
 
-HOY (miércoles)
-[ ] Abre "Enviar mensajes por WhatsApp.html", pon tu nombre arriba y manda los de MC Place y Quality Paint Shop.
-[ ] Pon en tu estado de WhatsApp la muestra de la panadería y la demo de la ferretería:
-    "Hago páginas, catálogos y sistemas para negocios de Colón. Esta semana con precio de lanzamiento. Escríbeme."
-[ ] Escribe a 10 conocidos que tengan negocio o conozcan a alguien (familia, amigos, la heladería Dulzuras Belgis).
+RUTINA DE CADA DÍA (unos 60-90 minutos)
+1. Abre la página de envío. Arriba elige la zona "Colón" y un solo tipo de negocio
+   (por ejemplo, "Taller" toda la semana).
+2. Primero, "⏰ Para seguimiento": manda el seguimiento a todos los que salgan ahí.
+3. Después, mensajes nuevos hasta llegar a 40 (la página te frena sola y te hace
+   esperar 90 segundos entre uno y otro).
+4. Cuando alguien te conteste: pulsa "💬 Me respondió" y usa los botones de respuesta
+   (Precio, Pedir llamada, "Lo voy a pensar", "Está caro", Dijo que sí...).
+   Contesta en minutos, no en horas. Siempre intenta pasar a una llamada de 5 minutos.
+5. Si alguien te paga: pulsa "⭐ Ya es cliente". Luego usa "Pedir opinión" y "Pedir recomendados".
 
-JUEVES: VISITAS EN PERSONA (lo que más funciona)
-Ruta a pie por el centro: Av. Herrera (Ferretería Anthony, Panadería Colón) -> Calle 13 (Punto Cuatro)
--> Av. Central / Calle 13-14 (Taller Auto Fino) -> Av. Meléndez (Quality Paint Shop).
-Lleva el celular cargado con la muestra de ESE negocio ya abierta.
-Qué decir (30 segundos):
-  "Buenas, soy [tu nombre], de aquí de Colón. Hago páginas y sistemas para negocios.
-   Le preparé esta muestra con el nombre de su negocio, mírela [le das el celular].
-   Sus clientes eligen lo que quieren y el pedido le llega a su WhatsApp ya escrito.
-   Esta semana la tengo a $150 en vez de $200. Si le gusta, con la mitad empiezo hoy
-   y en 5 días la tiene funcionando con sus fotos y sus precios."
-Si dice "lo voy a pensar": "Perfecto, ¿le paso el enlace por WhatsApp para que la vea con calma?"
-  -> pídele su WhatsApp. Eso ya es un avance.
-Si pregunta por el sistema: enséñale la demo de la ferretería o explica NovaCore (primer mes gratis).
-Visita también 10 negocios más de la lista (Excel), aunque no tengan muestra: "¿Le hago una muestra gratis?"
+2 O 3 TARDES POR SEMANA: VISITAS EN PERSONA (lo que más funciona en Colón)
+- Abre la "Ruta de visitas", escoge un sector (Sabanitas, Cativá, Av. Meléndez...) y visita 5 o 6.
+- Antes de entrar, abre "Ver su muestra" de ESE negocio. Arriba de la página tienes qué decir.
+- Marca "✓ Visitado" o "⭐ Interesado" y escribe una nota (ej: "volver a las 3, dueño Juan").
 
-VIERNES
-[ ] Manda el mensaje de "seguimiento" a todos los que no respondieron.
-[ ] A los que dijeron que sí: pídeles fotos, lista de precios y logo. Avísame y lo dejo listo.
-[ ] A los interesados sin muestra: dime el negocio y les hago la suya ese mismo día.
+CUANDO TENGAS TU PRIMER CLIENTE
+- Escribe su nombre en "Tu primer cliente" (arriba en la página de envío): desde ese momento
+  todos los mensajes dicen "Ya trabajo con [ese negocio]".
+- Abre "Continuar chat con Claude.bat" y dime quién es: le dejo su página lista con sus
+  fotos y precios, y la pongo en tu portafolio como ejemplo.
 
-SÁBADO Y DOMINGO
-[ ] Último aviso de la oferta: "La oferta de lanzamiento termina hoy."
-[ ] Cobra el 50% a los que confirmaron.
+CADA SEMANA
+- Abre "📊 Tus resultados" en la página de envío. Te dice qué tipos de negocio responden más
+  y si tienes que cambiar el mensaje o la forma de cerrar.
 
-META REALISTA: unos 40 negocios contactados -> unos 10 interesados -> 4 clientes.
-Cuando alguien diga que sí, abre "Continuar chat con Claude.bat" y dime quién es.
+META REALISTA: 200 mensajes por semana -> unos 15-25 te responden -> 2 a 4 clientes.
