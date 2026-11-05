@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>La Finca · Finca agroturística en Panamá</title>
+<meta name="description" content="Finca agroturística en Panamá: café, tubérculos, plátano y guanábana. Recorridos, cosecha, comida de finca y conservación del agua y el bosque.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="prueba">Versión de prueba · el nombre, el logo y los precios se cambian por los de la finca · hecha por <a href="https://edwin2030-cmd.github.io/dek-portafolio/">D.E.K NovaCore</a></div>
+
+<!-- HERO: la vista con dos tarjetas -->
+<section class="hero" id="inicio" aria-labelledby="titulo">
+  <div class="hero-fotos" aria-hidden="true">
+    <img class="activa" src="assets/view-from-finca-lerida-coffee-plantation-flickr.jpg" width="1600" height="1044" alt="">
+    <img src="assets/countryside-around-el-valle-04.jpg" width="1600" height="1200" alt="">
+    <img src="assets/countryside-around-el-valle-03.jpg" width="1600" height="1200" alt="">
+    <img src="assets/cloud-forest-los-quetzales-trail-baru-volcano.jpg" width="1600" height="1058" alt="">
+  </div>
+  <header class="nav">
+    <a class="marca" href="#inicio">La Finca</a>
+    <nav aria-label="Principal">
+      <a href="#cultivos">Cultivos</a>
+      <a href="#visita">Visita</a>
+      <a href="#preguntas">Preguntas</a>
+    </nav>
+    <a class="boton" href="#visita">Reservar visita</a>
+  </header>
+  <div class="hero-texto">
+    <h1 id="titulo">Café, plátano<br>y bosque vivo</h1>
+    <p>Una finca agroturística en Panamá. Recorre los cultivos, cosecha con tus manos, come lo que da la tierra y mira cómo cuidamos el agua y el suelo.</p>
+  </div>
+  <div class="tarjetas">
+    <a class="tarjeta" href="#visita">
+      <img src="assets/hands-that-are-picking-coffee-beans-from.jpg" width="1600" height="1067" alt="Mano recogiendo granos maduros de café">
+      <span>Arma tu visita <span aria-hidden="true">→</span></span>
+    </a>
+    <a class="tarjeta" href="#cuidamos">
+      <img src="assets/vegetacion-de-la-reserva-de-la-biosfera.jpg" width="1600" height="1200" alt="Árbol y helechos en el bosque">
+      <span>Conservación <span aria-hidden="true">→</span></span>
+    </a>
+  </div>
+</section>
+
+<main>
+
+<!-- INTRO -->
+<section class="intro" aria-labelledby="intro-t">
+  <h2 id="intro-t" class="oculto">La finca</h2>
+  <p class="intro-texto">Esto no es un parque para turistas: es una finca que trabaja. Sembramos café, tubérculos, plátano y guanábana, y cuidamos el bosque y el agua que lo hacen posible.</p>
+  <img class="intro-foto" src="assets/freshly-picked-coffee-beans-tanzania.jpg" width="1600" height="1066" alt="Mano abierta con granos de café recién despulpados frente a la mata" loading="lazy">
+  <p class="intro-nota">Abierto los fines de semana. Grupos, escuelas y familias entre semana, con reserva.</p>
+</section>
+
+<!-- CULTIVOS -->
+<section class="cultivos" id="cultivos" aria-labelledby="cult-t">
+  <div class="cult-cabeza"><h2 id="cult-t">Lo que crece aquí</h2></div>
+  <ul class="filas" role="list">
+    <li class="fila">
+      <div><h3>Café</h3><p>Matas bajo sombra de árboles nativos. Se cosecha grano por grano, solo el maduro, y se seca al sol en la misma finca.</p></div>
+      <img class="f-a" src="assets/el-cafetal.jpg" width="1600" height="1067" alt="Cafetal tupido de matas verdes" loading="lazy">
+    </li>
+    <li class="fila">
+      <div><h3>Tubérculos</h3><p>Ñame, otoe y yuca, la base de la mesa del campo. Te enseñamos a reconocer cada mata y cuándo está lista para sacar.</p></div>
+      <img class="f-b" src="assets/xanthosoma-sagittifolium-in-china.jpg" width="1600" height="1067" alt="Matas de otoe con sus hojas en forma de flecha" loading="lazy">
+    </li>
+    <li class="fila">
+      <div><h3>Plátano</h3><p>Racimos que se cortan verdes para el patacón y maduros para el plátano en tentación. Todo el año.</p></div>
+      <img class="f-c" src="assets/bunch-of-plaintain-on-the-tree.jpg" width="1600" height="2133" alt="Racimo de plátano verde en la mata" loading="lazy">
+    </li>
+    <li class="fila">
+      <div><h3>Guanábana</h3><p>La fruta de la casa. En chicha, en batido o recién abierta en el árbol, cuando es temporada.</p></div>
+      <img class="f-a" src="assets/annona-muricata-guanabana.jpg" width="1600" height="2407" alt="Guanábana verde colgando entre las hojas del árbol" loading="lazy">
+    </li>
+  </ul>
+</section>
+
+<!-- LA HOJA DE LA VISITA: la cosa viva -->
+<section class="visita" id="visita" aria-labelledby="visita-t">
+  <form class="hoja" id="hoja" action="#" novalidate>
+    <h2 id="visita-t">Arma tu visita</h2>
+    <p class="hoja-nota">Marca lo que quieres hacer. Precios por persona.</p>
+
+    <fieldset>
+      <legend>Recorridos</legend>
+      <label class="item"><input type="checkbox" name="i" value="Recorrido del café" data-p="15" checked><span class="nombre">Recorrido del café<small>De la mata a la taza, 2 horas</small></span><span class="precio">$15</span></label>
+      <label class="item"><input type="checkbox" name="i" value="Caminata al bosque y la quebrada" data-p="10"><span class="nombre">Caminata al bosque y la quebrada<small>Sendero de 3 km, aves y nacientes de agua</small></span><span class="precio">$10</span></label>
+      <label class="item"><input type="checkbox" name="i" value="Recorrido completo de la finca" data-p="20"><span class="nombre">Recorrido completo de la finca<small>Todos los cultivos, medio día</small></span><span class="precio">$20</span></label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Con tus manos</legend>
+      <label class="item"><input type="checkbox" name="i" value="Cosecha de plátano y tubérculos" data-p="8"><span class="nombre">Cosecha de plátano y tubérculos<small>Te llevas lo que saques</small></span><span class="precio">$8</span></label>
+      <label class="item"><input type="checkbox" name="i" value="Taller de café" data-p="12"><span class="nombre">Taller de café<small>Despulpar, secar, tostar y colar</small></span><span class="precio">$12</span></label>
+      <label class="item"><input type="checkbox" name="i" value="Siembra un árbol nativo" data-p="5"><span class="nombre">Siembra un árbol nativo<small>Queda en la finca con tu nombre</small></span><span class="precio">$5</span></label>
+    </fieldset>
+
+    <fieldset>
+      <legend>En la mesa</legend>
+      <label class="item"><input type="checkbox" name="i" value="Almuerzo de finca" data-p="12"><span class="nombre">Almuerzo de finca<small>Sancocho o arroz con guandú, patacones y chicha</small></span><span class="precio">$12</span></label>
+      <label class="item"><input type="checkbox" name="i" value="Degustación de guanábana" data-p="5"><span class="nombre">Degustación de guanábana<small>Fruta, chicha y batido, en temporada</small></span><span class="precio">$5</span></label>
+      <label class="item"><input type="checkbox" name="i" value="Café de la finca" data-p="3"><span class="nombre">Café de la finca<small>Colado en el momento</small></span><span class="precio">$3</span></label>
+    </fieldset>
+
+    <div class="cuenta">
+      <label class="personas">Personas
+        <span class="contador">
+          <button type="button" id="menos" aria-label="Una persona menos">−</button>
+          <input id="personas" type="number" inputmode="numeric" min="1" max="60" value="2" aria-label="Número de personas">
+          <button type="button" id="mas" aria-label="Una persona más">+</button>
+        </span>
+      </label>
+      <p class="total" aria-live="polite">Total <strong id="total">$30</strong></p>
+    </div>
+    <a class="boton boton-ancho" id="enviar" href="#">Pedir por WhatsApp</a>
+    <p class="horario">Sábados y domingos, de 8:00 a. m. a 3:00 p. m.<br>Entre semana, solo con reserva.</p>
+  </form>
+</section>
+
+<!-- UN VERBO A LA VEZ -->
+<section class="verbos" id="cuidamos" aria-labelledby="verbos-t">
+  <h2 id="verbos-t" class="oculto">Cómo es un día en la finca</h2>
+  <div class="panel">
+    <img src="assets/cloud-forest-los-quetzales-trail-baru-volcano.jpg" width="1600" height="1058" alt="Sendero entre árboles altos en el bosque nuboso" loading="lazy">
+    <p class="verbo" aria-hidden="true">Camina</p>
+    <p class="panel-texto"><strong>Camina.</strong> El sendero pasa por el cafetal y sube al bosque que protege la quebrada.</p>
+  </div>
+  <div class="panel">
+    <img src="assets/bunch-of-plaintain-on-the-tree.jpg" width="1600" height="2133" alt="Racimo de plátano en la mata" loading="lazy">
+    <p class="verbo" aria-hidden="true">Cosecha</p>
+    <p class="panel-texto"><strong>Cosecha.</strong> Corta tu racimo, saca tu ñame y llévatelo a casa.</p>
+  </div>
+  <div class="panel">
+    <img src="assets/annona-muricata-in-ste-anne-guadeloupe-3.jpg" width="1600" height="1067" alt="Guanábana entre las hojas" loading="lazy">
+    <p class="verbo" aria-hidden="true">Prueba</p>
+    <p class="panel-texto"><strong>Prueba.</strong> Guanábana, café colado y comida hecha con lo que se sembró aquí.</p>
+  </div>
+  <div class="panel">
+    <img src="assets/vegetacion-de-la-reserva-de-la-biosfera.jpg" width="1600" height="1200" alt="Tronco y palmas del bosque vistos desde abajo" loading="lazy">
+    <p class="verbo" aria-hidden="true">Cuida</p>
+    <p class="panel-texto"><strong>Cuida.</strong> No quemamos, guardamos el bosque junto al agua y devolvemos al suelo lo que la cosecha le quita.</p>
+  </div>
+</section>
+
+<!-- GALERÍA -->
+<section class="galeria" aria-labelledby="gal-t">
+  <div class="gal-cabeza"><h2 id="gal-t">La finca en fotos</h2><p>8 fotos · desliza</p></div>
+  <div class="fila-gal" tabindex="0" aria-label="Fotos de la finca, desliza para ver más">
+    <figure class="m-alta"><img src="assets/annona-muricata-guanabana.jpg" width="1600" height="2407" alt="Guanábana en el árbol"></figure>
+    <figure class="m-par"><img src="assets/el-cafetal.jpg" width="1600" height="1067" alt="Cafetal"><img src="assets/hands-that-are-picking-coffee-beans-from.jpg" width="1600" height="1067" alt="Cosecha de café maduro"></figure>
+    <figure class="m-ancha"><img src="assets/countryside-around-el-valle-04.jpg" width="1600" height="1200" alt="Potrero y cerro al fondo"></figure>
+    <figure class="m-par"><img src="assets/xanthosoma-sagittifolium-in-china.jpg" width="1600" height="1067" alt="Matas de otoe"><img src="assets/freshly-picked-coffee-beans-tanzania.jpg" width="1600" height="1066" alt="Granos de café en la mano"></figure>
+    <figure class="m-alta"><img src="assets/bunch-of-plaintain-on-the-tree.jpg" width="1600" height="2133" alt="Racimo de plátano"></figure>
+    <figure class="m-ancha"><img src="assets/view-from-finca-lerida-coffee-plantation-flickr.jpg" width="1600" height="1044" alt="Vista de las lomas desde un cafetal"></figure>
+  </div>
+</section>
+
+<!-- PREGUNTAS -->
+<section class="preguntas" id="preguntas" aria-labelledby="preg-t">
+  <div class="preg-col">
+    <h2 id="preg-t">Antes de venir</h2>
+    <ul class="hechos">
+      <li>A una hora de la ciudad más cercana, por carretera asfaltada</li>
+      <li>Sábados y domingos, 8:00 a. m. a 3:00 p. m.</li>
+      <li>Estacionamiento dentro de la finca</li>
+    </ul>
+    <div class="acordeon">
+      <details><summary>¿Hay que reservar?</summary><p>Sí, al menos un día antes, para tener listo el recorrido y la comida. Entre semana solo abrimos con reserva.</p></details>
+      <details><summary>¿Qué llevo puesto?</summary><p>Zapatos cerrados o botas, ropa cómoda, gorra y repelente. Si llueve, el sendero se pone resbaloso.</p></details>
+      <details><summary>¿Pueden ir niños?</summary><p>Claro. A los niños les encanta cosechar. Los menores de 5 años no pagan.</p></details>
+      <details><summary>¿Reciben grupos y escuelas?</summary><p>Sí. Armamos giras educativas sobre cultivos y conservación para grupos de hasta 60 personas.</p></details>
+      <details><summary>¿Cómo se paga?</summary><p>En efectivo o por Yappy el día de la visita. Para grupos pedimos un adelanto.</p></details>
+    </div>
+    <div class="preg-acciones">
+      <a class="boton" href="#visita">Arma tu visita</a>
+      <a class="enlace" href="https://wa.me/?text=Hola%2C%20tengo%20una%20pregunta%20sobre%20la%20finca">Haz otra pregunta</a>
+    </div>
+  </div>
+  <div class="preg-fotos">
+    <img class="alta" src="assets/countryside-around-el-valle-03.jpg" width="1600" height="1200" alt="Cerca de madera con flores y el cerro detrás">
+    <img class="cuadrada" src="assets/annona-muricata-in-ste-anne-guadeloupe-3.jpg" width="1600" height="1067" alt="Guanábana">
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="contacto" aria-labelledby="cont-t">
+  <img class="cont-foto" src="assets/countryside-around-el-valle-04.jpg" width="1600" height="1200" alt="Potrero verde con un cerro al fondo" loading="lazy">
+  <div class="tarjeta-visita">
+    <h2 id="cont-t">Cómo llegar</h2>
+    <p>Dirección de la finca<br>Corregimiento, provincia</p>
+    <dl class="horas">
+      <div><dt>Sábado</dt><dd>8:00 – 15:00</dd></div>
+      <div><dt>Domingo</dt><dd>8:00 – 15:00</dd></div>
+      <div><dt>Lunes a viernes</dt><dd>Con reserva</dd></div>
+    </dl>
+    <p><a href="tel:+50760000000">+507 6000-0000</a></p>
+    <a class="boton boton-ancho" href="https://www.google.com/maps">Abrir en el mapa</a>
+  </div>
+</section>
+
+</main>
+
+<footer class="pie">
+  <img class="pie-foto" src="assets/hands-that-are-picking-coffee-beans-from.jpg" width="1600" height="1067" alt="Cosecha de café maduro, de cerca" loading="lazy">
+  <div class="pie-lado">
+    <p class="pie-marca">La Finca</p>
+    <nav class="pie-menu" aria-label="Pie de página">
+      <a href="#inicio">Inicio</a>
+      <a href="#cultivos">Lo que crece aquí</a>
+      <a href="#visita">Arma tu visita</a>
+      <a href="#cuidamos">Un día en la finca</a>
+      <a href="#preguntas">Antes de venir</a>
+    </nav>
+    <div class="pie-bloques">
+      <p>WhatsApp +507 6000-0000<br>finca@correo.com</p>
+      <p>Instagram<br>Facebook</p>
+    </div>
+    <p class="creditos">Fotos de muestra: <a href="https://commons.wikimedia.org/wiki/File:Countryside_around_El_Valle_(04).jpg">“Countryside around El Valle (04)”</a>, Adam Jones, <a href="https://creativecommons.org/licenses/by-sa/2.0">CC BY-SA 2.0</a>; <a href="https://commons.wikimedia.org/wiki/File:Countryside_around_El_Valle_(03).jpg">“Countryside around El Valle (03)”</a>, Adam Jones, <a href="https://creativecommons.org/licenses/by-sa/2.0">CC BY-SA 2.0</a>; <a href="https://commons.wikimedia.org/w/index.php?curid=69881810">“View from Finca Lerida coffee plantation - Flickr - gailhampshire”</a>, gailhampshire from Cradley, Malvern, U.K, <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>; <a href="https://commons.wikimedia.org/w/index.php?curid=3906378">“Annona muricata-guanábana”</a>, Tim Gage, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a>; <a href="https://commons.wikimedia.org/wiki/File:Annona_muricata_in_Ste-Anne_Guadeloupe_(3).jpg">“Annona muricata in Ste-Anne Guadeloupe (3)”</a>, Tournasol7, <a href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>; <a href="https://commons.wikimedia.org/wiki/File:Hands-that-are-picking-coffee-beans-from-coffee-tree.jpg">“Hands-that-are-picking-coffee-beans-from-coffee-tree”</a>, Saddymonster, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>; <a href="https://commons.wikimedia.org/w/index.php?curid=155918580">“Freshly picked coffee beans - Tanzania”</a>, Harald Ulver, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>; <a href="https://commons.wikimedia.org/w/index.php?curid=77378706">“El Cafetal”</a>, Baruc Acosta, <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>; <a href="https://commons.wikimedia.org/wiki/File:Bunch_of_plaintain_on_the_tree.jpg">“Bunch of plaintain on the tree”</a>, Nubelbariloe, <a href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>; <a href="https://commons.wikimedia.org/wiki/File:Xanthosoma_sagittifolium_in_China.jpg">“Xanthosoma sagittifolium in China”</a>, Dinkun Chen, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>; <a href="https://commons.wikimedia.org/wiki/File:Cloud_forest,_Los_Quetzales_Trail,_Baru_Volcano_National_Park,_Panama.jpg">“Cloud forest, Los Quetzales Trail, Baru Volcano National Park, Panama”</a>, RB Photo, <a href="https://creativecommons.org/licenses/by/2.0">CC BY 2.0</a>; <a href="https://commons.wikimedia.org/wiki/File:Vegetaci%C3%B3n_de_la_Reserva_de_la_Biosfera_La_Amistad_Panama_(RBLAP)_12.JPG">“Vegetación de la Reserva de la Biosfera La Amistad Panama (RBLAP) 12”</a>, Ariel Rodríguez-Vargas, <a href="https://creativecommons.org/licenses/by-sa/3.0">CC BY-SA 3.0</a>. Vía Wikimedia Commons.</p>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
