@@ -88,7 +88,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{text-align:left;p
   <div id="cupo"></div>
 </header>
 <main>
-  <div class="aviso"><b>Cómo escribir sin que te bloqueen WhatsApp:</b> máximo <b>12 mensajes por día</b> y <b>4 minutos</b> entre uno y otro (la página no te deja pasar de ahí). El primer mensaje ya no lleva enlaces ni precios: solo pregunta si puedes mandar la muestra. Cuando te respondan, márcalo con <b>💬 Me respondió</b> y usa <b>📎 Mandar la muestra</b>. Usa <b>WhatsApp Business</b> con foto, descripción y tu catálogo. Si un número es fijo (empieza por 4) no tiene WhatsApp: llama o visítalo con la <b>Ruta de visitas</b>.</div>
+  <div class="aviso"><b>Cómo escribir sin que te bloqueen WhatsApp:</b> máximo <b>12 mensajes por día</b> y <b>4 minutos</b> entre uno y otro (la página no te deja pasar de ahí). Cuando te respondan, márcalo con <b>💬 Me respondió</b> y usa <b>📎 Mandar la muestra</b>. Usa <b>WhatsApp Business</b> con foto, descripción y tu catálogo. Si un número es fijo (empieza por 4) no tiene WhatsApp: llama o visítalo con la <b>Ruta de visitas</b>.</div>
   <div class="aviso" id="falta-link" style="border-color:#7f1d1d;background:#2a0f12">Primero escribe arriba el <b>enlace de tu portafolio</b> (el de Vercel). Hasta entonces los botones de WhatsApp están apagados, para que no salga un mensaje sin enlace.</div>
   <details class="panel" id="stats"></details>
   <details class="panel" id="rapidas-panel"><summary>💬 Respuestas listas (para cuando te contesten)</summary><div id="rapidas-lista"></div></details>
@@ -146,7 +146,9 @@ const DIAS_SEG = 3; // días sin respuesta antes del seguimiento
 const dias = (f) => f ? Math.round((new Date(hoy()) - new Date(f)) / 864e5) : 0;
 const toca = (n) => { const s = st[n.id]; return !!(s && s.ok && !s.resp && !s.seg && dias(s.fecha) >= DIAS_SEG); };
 function seguimiento(n) {
-  return `Hola, buenas. Le escribí hace unos días sobre ${n.muestra ? 'la muestra de página que le hice' : 'una página o catálogo'} para *${limpiaNombre(n.nombre)}*. ¿Se la envío? Si no es buen momento, no hay problema 🙏`;
+  return `Hola, buenas. Le escribí hace unos días ${n.muestra ? `sobre la muestra que le preparé para *${limpiaNombre(n.nombre)}*: ${MUESTRAS}${n.muestra}/` : `sobre una página o catálogo para *${limpiaNombre(n.nombre)}*.`}
+
+¿Pudo verla? Si le interesa, se la dejo lista con sus fotos y precios. Y si no es el momento, no hay problema, ¡gracias!`;
 }
 const faltaEspera = () => Math.max(0, Math.ceil(((cfg.ult || 0) + ESPERA * 1000 - Date.now()) / 1000));
 function cupo() {
@@ -171,16 +173,18 @@ const bonito = (n) => n.slice(0, 4) + '-' + n.slice(4);
 function limpiaNombre(n) { return n.replace(/\s*\(.*\)$/, ''); }
 
 function mensaje(n) {
-  // Primer mensaje: corto, SIN enlaces y SIN precios. Solo pide permiso para mandar la muestra.
-  // Los enlaces de un número desconocido parecen estafa y son lo que más reportes trae.
-  const nombre = limpiaNombre(n.nombre);
-  const yo = cfg.yo ? `Soy ${cfg.yo}, ` : 'Le escribo ';
-  const de = n.region === 'Colón' ? 'de aquí de Colón' : 'de Colón (trabajo con negocios de todo Panamá)';
-  const ref = cfg.ref ? ` Ya trabajo con *${cfg.ref}*.` : '';
-  const pide = n.muestra
-    ? `Le armé a *${nombre}* una muestra gratis de cómo se vería su negocio en internet, con su nombre. ¿Se la puedo enviar por aquí?`
-    : `¿Le puedo enviar por aquí un ejemplo de cómo se vería *${nombre}* en internet? Es gratis y sin compromiso.`;
-  return `Hola, buenas 👋 ¿Es el WhatsApp de *${nombre}*?\n\n${yo}${de}. Hago páginas y catálogos digitales para negocios.${ref}\n\n${pide}\n\nSi no le interesa, me dice y no le vuelvo a escribir 🙏`;
+  const yo = cfg.yo ? `Soy ${cfg.yo}, de D.E.K NovaCore` : 'Le escribe D.E.K NovaCore';
+  const link = (cfg.link || '[ENLACE]').replace(/\/?$/, '/');
+  const r = n.rubro, o = cfg.oferta || 'todo';
+  const cat = `un catálogo digital con ${CAT[r]}, donde el cliente arma su pedido y le llega a su WhatsApp ya escrito`;
+  const web = 'una página web para que lo encuentren en Google, con su ubicación, horario y botón de WhatsApp';
+  const sis = SIS[r];
+  let cuerpo;
+  if (o === 'catalogo') cuerpo = `Le puedo hacer ${cat}. Desde $450.`;
+  else if (o === 'web') cuerpo = `Le puedo hacer ${web}. Desde $200.`;
+  else if (o === 'sistema') cuerpo = `Le puedo hacer ${sis}. Funciona en el celular y la computadora.`;
+  else cuerpo = `Ayudo a negocios de aquí con tres cosas, y puede tomar una o las tres juntas con precio especial:\n\n1) *Catálogo digital*: ${CAT[r]} en línea; el cliente arma su pedido y le llega a su WhatsApp ya escrito.\n2) *Página web*: para que lo encuentren en Google, con su ubicación, horario y botón de WhatsApp.\n3) *Sistema a medida*: ${sis.replace(/^un sistema /, '')}.`;
+  return `Hola, buenas. ¿Hablo con *${limpiaNombre(n.nombre)}*? ${yo}, ${n.region === 'Colón' ? 'aquí en Colón' : 'desde Colón (trabajo con negocios de todo Panamá)'}.${cfg.ref ? ` Ya trabajo con *${cfg.ref}*.` : ''}\n\n${cuerpo}${n.muestra ? `\n\nYa le preparé una *muestra con el nombre de su negocio* para que vea cómo quedaría: ${MUESTRAS}${n.muestra}/` : ''}\n\nEsta semana tengo *precio de lanzamiento* para los primeros 4 negocios: página $150, catálogo $350 y el primer mes del sistema gratis. Paga la mitad al empezar y la otra mitad al entregar (Yappy o transferencia).\n\nMis trabajos: ${link}\n\n${n.muestra ? '¿Qué le parece? Si le gusta, se la dejo lista con sus fotos y precios.' : '¿Le gustaría que le prepare una muestra para su negocio? Sin compromiso.'}`;
 }
 const RESP = [
   ['muestra', '📎 Mandar la muestra', (n) => n.muestra ? `¡Gracias por responder! 🙌 Aquí la tiene: ${MUESTRAS}${n.muestra}/\n\nLa hice con el nombre de *${limpiaNombre(n.nombre)}*. Si le gusta, se la dejo lista con sus fotos, precios y su WhatsApp. ¿Qué le parece?` : `¡Gracias por responder! 🙌 Aquí puede ver trabajos que he hecho: ${(cfg.link || '').replace(/\/?$/, '/')}\n\nSi me dice qué vende, le preparo una muestra con el nombre de *${limpiaNombre(n.nombre)}*, gratis.`],
